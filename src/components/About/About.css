@@ -1,0 +1,138 @@
+/* ── About CSS ── */
+.about {
+  padding: 110px 0;
+  background: var(--white);
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.about-images {
+  position: relative;
+}
+.about-img-main {
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  height: 380px;
+  margin-bottom: 16px;
+  box-shadow: var(--sh-lg);
+}
+.about-img-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.about-img-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.about-img-grid img {
+  height: 100px;
+  width: 100%;
+  border-radius: var(--r-sm);
+  transition: transform var(--ease);
+  object-fit: cover;
+}
+.about-img-grid img:hover {
+  transform: scale(1.05);
+}
+
+.about-badge-float {
+  position: absolute;
+  top: 24px;
+  right: -24px;
+  z-index: 2;
+}
+.float-badge {
+  background: linear-gradient(135deg, var(--g700), var(--g600));
+  color: var(--white);
+  padding: 18px 22px;
+  border-radius: var(--r-md);
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(26,71,33,.4);
+  animation: floatBadge 3s ease-in-out infinite;
+}
+.float-num {
+  display: block;
+  font-family: var(--serif);
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.float-text {
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--g300);
+  margin-top: 4px;
+  display: block;
+}
+
+.about-content {
+  padding-left: 8px;
+}
+.about-description {
+  color: var(--gray-5);
+  font-size: 1.02rem;
+  line-height: 1.75;
+  margin-bottom: 18px;
+}
+
+.about-features {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 32px 0;
+}
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--gray-1);
+  border-radius: var(--r-sm);
+  border-left: 3px solid var(--g500);
+}
+.feature-icon {
+  font-size: 1.4rem;
+}
+.feature-text {
+  display: flex;
+  flex-direction: column;
+}
+.feature-text strong {
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--dark-2);
+}
+.feature-text span {
+  font-size: .85rem;
+  color: var(--gray-5);
+}
+
+@media (max-width: 900px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+  .about-images {
+    max-width: 560px;
+    margin: 0 auto;
+  }
+  .about-badge-float {
+    right: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-img-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .about-img-grid img {
+    height: 120px;
+  }
+}

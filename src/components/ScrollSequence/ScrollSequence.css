@@ -1,0 +1,140 @@
+/* ── ScrollSequence CSS ── */
+.scroll-sequence-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+  background: #f3f3f3; /* image canvas background matches ezgif frames */
+  border-radius: var(--r-lg);
+  margin: 30px 0 60px 0;
+}
+
+/* Sticky background wrapper */
+.scroll-sequence-sticky {
+  position: sticky;
+  top: 92px; /* Leaves gap for navbar */
+  width: 100%;
+  height: 75vh;
+  z-index: 1;
+  pointer-events: none; /* click-through to text */
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.scroll-sequence-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* Scrolling foreground */
+.scroll-sequence-content {
+  position: relative;
+  z-index: 2;
+  margin-top: -75vh; /* pulls the grid container exactly over the canvas */
+  pointer-events: none; /* allow click through on empty areas */
+  padding: 40px 0 60px 0;
+}
+
+/* Force split grid: content on left, right column empty for house animation */
+.scroll-sequence-content .detail-grid {
+  display: grid;
+  grid-template-columns: 480px 1fr;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  pointer-events: none;
+}
+
+.scroll-sequence-content .detail-content-area {
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  pointer-events: all;
+}
+
+.scroll-sequence-content .detail-sidebar {
+  grid-column: 1; /* Pushed to the left column below content */
+  position: static;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  pointer-events: all;
+  margin-top: 24px;
+}
+
+/* Styled floating steps cards for readability */
+.scroll-sequence-content .detail-paragraph,
+.scroll-sequence-content .detail-subheading {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: var(--r-md);
+  padding: 30px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+  margin: 0;
+}
+
+.scroll-sequence-content .detail-sidebar .sidebar-card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+}
+
+/* Fallback Preloader */
+.scroll-sequence-fallback {
+  position: absolute;
+  inset: 0;
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  gap: 20px;
+}
+
+.scroll-sequence-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--gray-2);
+  border-top-color: var(--g600);
+  border-radius: 50%;
+  animation: scroll-seq-spin 1s linear infinite;
+}
+
+.scroll-sequence-loading-text {
+  font-size: 0.95rem;
+  color: var(--gray-5);
+  font-weight: 600;
+  font-family: var(--sans);
+  letter-spacing: 0.05em;
+}
+
+@keyframes scroll-seq-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 990px) {
+  .scroll-sequence-sticky {
+    height: 60vh;
+  }
+  .scroll-sequence-content {
+    margin-top: -60vh;
+    padding: 20px 0;
+  }
+  .scroll-sequence-content .detail-grid {
+    grid-template-columns: 1fr; /* Stack vertically on small screens */
+    pointer-events: all;
+  }
+  .scroll-sequence-content .detail-content-area,
+  .scroll-sequence-content .detail-sidebar {
+    grid-column: auto;
+  }
+}

@@ -1,0 +1,32 @@
+/* ── BackToTop CSS ── */
+.back-to-top {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 46px;
+  height: 46px;
+  background: var(--g600);
+  color: var(--white);
+  border-radius: var(--r-sm);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  transition: var(--ease);
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+  box-shadow: 0 4px 20px rgba(52,160,66,.4);
+  border: none;
+  cursor: pointer;
+}
+.back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+.back-to-top:hover {
+  background: var(--g500);
+  transform: translateY(-3px);
+}

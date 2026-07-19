@@ -1,0 +1,64 @@
+/* ── Vision CSS ── */
+.vision {
+  position: relative;
+  padding: 130px 0;
+  overflow: hidden;
+}
+.vision-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.vision-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.vision-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(5,15,7,.92) 45%, rgba(10,26,13,.7) 100%);
+}
+.vision-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.vision-text {
+  color: rgba(255,255,255,.8);
+  font-size: 1.1rem;
+  line-height: 1.75;
+  margin-bottom: 32px;
+}
+.vision-img-block {
+  display: flex;
+  justify-content: center;
+}
+.vision-img-block img {
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  border: 6px solid rgba(52,160,66,.4);
+  box-shadow: 0 0 0 12px rgba(52,160,66,.1), var(--sh-xl);
+  object-fit: cover;
+  animation: rotateRing 10s linear infinite;
+}
+
+@keyframes rotateRing {
+  0% { border-color: rgba(52,160,66,.4) rgba(52,160,66,.1) rgba(52,160,66,.2) rgba(52,160,66,.4); }
+  50% { border-color: rgba(52,160,66,.1) rgba(52,160,66,.4) rgba(52,160,66,.4) rgba(52,160,66,.2); }
+  100% { border-color: rgba(52,160,66,.4) rgba(52,160,66,.1) rgba(52,160,66,.2) rgba(52,160,66,.4); }
+}
+
+@media (max-width: 900px) {
+  .vision-grid {
+    grid-template-columns: 1fr;
+  }
+  .vision-img-block {
+    display: none;
+  }
+}
