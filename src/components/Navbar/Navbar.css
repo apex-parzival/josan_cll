@@ -51,7 +51,7 @@
   height: 52px;
   width: auto;
   object-fit: contain;
-  filter: brightness(0) invert(1); /* Converts dark green logo to pure white for premium dark contrast */
+  mix-blend-mode: lighten; /* removes white background on dark navbar — white becomes transparent */
   transition: transform var(--ease);
 }
 .logo-img:hover {
@@ -243,31 +243,46 @@
 /* Responsive */
 @media (max-width: 768px) {
   .nav-links, .nav-cta { display: none; }
-  .hamburger { display: flex; }
+  .hamburger {
+    display: flex;
+    margin-left: auto;
+  }
   .navbar {
-    top: 12px;
-    width: calc(100% - 24px);
+    top: 10px;
+    left: 12px;
+    right: 12px;
+    width: auto; /* use left+right instead of calc to avoid overflow */
+    transform: none; /* remove translateX(-50%) — not needed with left/right */
+    max-width: none;
+  }
+  .navbar.retracted {
+    transform: translateY(-110px);
   }
   .nav-container {
     padding: 0 16px;
     height: 60px;
+    gap: 0;
+  }
+  .nav-logo {
+    flex-shrink: 0;
   }
   .logo-img {
-    height: 42px;
+    height: 44px;
   }
 }
 
 @media (max-width: 480px) {
   .navbar {
     top: 8px;
-    width: calc(100% - 16px);
+    left: 8px;
+    right: 8px;
   }
   .nav-container {
     padding: 0 14px;
     height: 56px;
   }
   .logo-img {
-    height: 36px;
+    height: 38px;
   }
   .mobile-drawer {
     width: 100vw;
