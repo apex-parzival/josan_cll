@@ -233,3 +233,44 @@
     position: static;
   }
 }
+
+@media (max-width: 576px) {
+  .detail-top-nav {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+  }
+  .detail-breadcrumbs {
+    font-size: 0.82rem;
+  }
+  .btn-back-text {
+    font-size: 0.9rem;
+  }
+  .detail-hero {
+    height: 40vh;
+    min-height: 280px;
+  }
+  .detail-hero-content {
+    padding-bottom: 24px;
+  }
+  .detail-body-section {
+    padding: 40px 0;
+  }
+  .detail-paragraph {
+    padding: 20px 18px;
+    border-radius: 12px;
+  }
+  .card-question {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+  .card-answer {
+    font-size: 0.98rem;
+  }
+  .sidebar-card {
+    padding: 24px 20px;
+    border-radius: 12px;
+  }
+}
