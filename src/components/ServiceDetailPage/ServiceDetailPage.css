@@ -36,6 +36,7 @@
   z-index: 2;
   width: 100%;
 }
+
 /* Top navigation bar and breadcrumbs */
 .detail-top-nav {
   display: flex;
@@ -68,6 +69,8 @@
   color: var(--gray-5);
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 2px;
 }
 .detail-breadcrumbs .crumb {
   cursor: pointer;
@@ -98,7 +101,7 @@
 }
 .detail-title {
   font-family: var(--serif);
-  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-size: clamp(1.8rem, 5vw, 3.4rem);
   font-weight: 800;
   color: var(--white);
   line-height: 1.15;
@@ -169,7 +172,7 @@
   flex-direction: column;
   gap: 30px;
   position: sticky;
-  top: 100px; /* Aligns below the floating navbar */
+  top: 100px;
 }
 .sidebar-card {
   background: var(--gray-1);
@@ -207,6 +210,7 @@
   font-weight: 700;
   font-size: .95rem;
   transition: var(--ease);
+  cursor: pointer;
 }
 .sidebar-phone-btn:hover {
   background: var(--g600);
@@ -224,6 +228,7 @@
   font-weight: 600;
 }
 
+/* Tablet */
 @media (max-width: 990px) {
   .detail-grid {
     grid-template-columns: 1fr;
@@ -231,6 +236,27 @@
   }
   .detail-sidebar {
     position: static;
+  }
+  .detail-body-section {
+    padding: 60px 0;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .detail-hero {
+    height: 380px;
+    padding-bottom: 40px;
+  }
+  .detail-title {
+    font-size: clamp(1.6rem, 6vw, 2.4rem);
+  }
+  .detail-body-section {
+    padding: 50px 0;
+  }
+  .detail-subheading {
+    font-size: 1.3rem;
+    margin-top: 20px;
   }
 }
 
@@ -250,27 +276,38 @@
   }
   .detail-hero {
     height: 40vh;
-    min-height: 280px;
-  }
-  .detail-hero-content {
+    min-height: 260px;
     padding-bottom: 24px;
   }
   .detail-body-section {
     padding: 40px 0;
   }
   .detail-paragraph {
-    padding: 20px 18px;
-    border-radius: 12px;
+    padding: 18px 16px;
+    border-radius: var(--r-sm);
   }
   .card-question {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     margin-bottom: 8px;
   }
   .card-answer {
-    font-size: 0.98rem;
+    font-size: .95rem;
+    line-height: 1.7;
   }
   .sidebar-card {
-    padding: 24px 20px;
-    border-radius: 12px;
+    padding: 22px 18px;
+    border-radius: var(--r-sm);
+  }
+  .sidebar-card h3 {
+    font-size: 1.08rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .detail-hero {
+    min-height: 240px;
+  }
+  .detail-title {
+    font-size: 1.5rem;
   }
 }

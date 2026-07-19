@@ -33,7 +33,7 @@ export default function About() {
           {/* About Content */}
           <div className="about-content reveal right">
             <div className="section-label">Who We Are</div>
-            <h2 class="section-title">Every detail is our care, every project is our passion.</h2>
+            <h2 className="section-title">Every detail is our care, every project is our passion.</h2>
             <p className="about-description">
               We are experienced builders with a clear vision. We design areas that bring comfort, strength, and beauty to every home we touch, making us a reliable landscaping company Calgary residents can count on.
             </p>

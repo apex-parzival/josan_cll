@@ -228,9 +228,10 @@
 }
 .drawer-drop-item {
   font-size: .82rem; color: rgba(255,255,255,.6);
-  padding: 8px 10px; border-radius: var(--r-sm);
+  padding: 10px 10px; border-radius: var(--r-sm);
   background: none; border: none; cursor: pointer;
   text-align: left; transition: var(--ease);
+  min-height: 40px;
 }
 .drawer-drop-item:hover { color: var(--white); background: rgba(52,160,66,.15); }
 
@@ -243,4 +244,33 @@
 @media (max-width: 768px) {
   .nav-links, .nav-cta { display: none; }
   .hamburger { display: flex; }
+  .navbar {
+    top: 12px;
+    width: calc(100% - 24px);
+  }
+  .nav-container {
+    padding: 0 16px;
+    height: 60px;
+  }
+  .logo-img {
+    height: 42px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    top: 8px;
+    width: calc(100% - 16px);
+  }
+  .nav-container {
+    padding: 0 14px;
+    height: 56px;
+  }
+  .logo-img {
+    height: 36px;
+  }
+  .mobile-drawer {
+    width: 100vw;
+    border-left: none;
+  }
 }

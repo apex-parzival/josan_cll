@@ -175,3 +175,24 @@
     border-radius: 16px;
   }
 }
+
+@media (max-width: 480px) {
+  .scroll-sequence-content .detail-grid {
+    padding: 80px 12px 100px 12px;
+    gap: 22px;
+  }
+  .scroll-sequence-content .detail-paragraph,
+  .scroll-sequence-content .sidebar-card {
+    padding: 20px 16px;
+    border-radius: 12px;
+  }
+  .scroll-sequence-content .card-question {
+    font-size: 1.05rem;
+  }
+  .scroll-sequence-content .card-answer {
+    font-size: .92rem;
+  }
+  .scroll-sequence-content .sidebar-card h3 {
+    font-size: 1.2rem;
+  }
+}
