@@ -5,9 +5,9 @@ import './Navbar.css'
 const SERVICES = [
   'Artificial Grass / Turf','Basement Renovations','Bobcat Service',
   'Deck Building Services','Decking','Fencing Services','Flower Bed',
-  'Framing Service','Garage','Gate Building','Gazebo','Home Renovation','Kitchen Service',
+  'Framing Service','Garage','Gate Building','Home Renovation','Kitchen Service',
   'Lot Gardening','New Basement Construction','Painting Service',
-  "Patio's",'Pergola Services','Railing','Retaining Walls','Rock','Sod','Trees',
+  "Patio's",'Pergola','Railing','Retaining Walls','Rock','Sod','Trees',
 ]
 
 const PAGE_MAP = {
@@ -21,10 +21,14 @@ const PAGE_MAP = {
   'Framing Service': 'framing-service',
   'Garage': 'garage',
   'Gate Building': 'gate-building',
-  'Gazebo': 'gazebo',
   'Home Renovation': 'professional-home-renovation',
   'Kitchen Service': 'kitchen-service',
+  'Lot Gardening': 'lot-gardening',
   'New Basement Construction': 'new-basement-construction',
+  'Painting Service': 'painting-service',
+  "Patio's": 'patios',
+  'Pergola': 'pergola-services',
+  'Railing': 'railing',
   'Retaining Walls': 'retaining-walls',
   'Rock': 'rock',
   'Sod': 'sod',

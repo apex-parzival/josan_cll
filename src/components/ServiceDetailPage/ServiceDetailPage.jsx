@@ -4,6 +4,33 @@ import './ServiceDetailPage.css'
 import servicesData from '../../services_content_all.json'
 import ScrollSequence from '../ScrollSequence/ScrollSequence'
 
+const SEQUENCE_FOLDERS = {
+  'artificial-grass-installation-turf': 'artificial grass',
+  'trees': 'backyard renovation',
+  'basement-renovation': 'basement renovation',
+  'basement-renovations': 'basement renovation 24',
+  'bobcat-service': 'bobcat',
+  'decking': 'deck',
+  'deck-building-services': 'deck building',
+  'fencing-services': 'fencing',
+  'flower-bed': 'flower bed',
+  'framing-service': 'framing',
+  'garage': 'gargage',
+  'gate-building': 'gate building',
+  'gazebo': 'gazebo',
+  'professional-home-renovation': 'home renovation',
+  'kitchen-service': 'kitchen',
+  'lot-gardening': 'lot gardening and landscaping',
+  'new-basement-construction': 'new basement construciton',
+  'painting-service': 'painting',
+  'patios': 'patio',
+  'pergola-services': 'pergola',
+  'railing': 'railing',
+  'retaining-walls': 'retaining wall',
+  'rock': 'rock lanscaping',
+  'sod': 'sod'
+}
+
 export default function ServiceDetailPage() {
   const { serviceId } = useParams()
   const navigate = useNavigate()
@@ -37,6 +64,47 @@ export default function ServiceDetailPage() {
     return text.length < 60 && !text.endsWith('.') && !text.endsWith('?')
   }
 
+  // Parse paragraphs and group headings into the next paragraph card as bold questions
+  function getServiceCards(paragraphs) {
+    const cards = []
+    let pendingHeadings = []
+
+    paragraphs.forEach((item) => {
+      if (isHeading(item)) {
+        pendingHeadings.push(item.text.trim())
+      } else {
+        let headingText = ""
+        if (pendingHeadings.length > 0) {
+          headingText = pendingHeadings.map(h => {
+            let clean = h.replace(/\.+$/, "")
+            if (!clean.endsWith("?")) {
+              clean += "?"
+            }
+            return clean
+          }).join(" ")
+          pendingHeadings = []
+        }
+        
+        cards.push({
+          heading: headingText,
+          text: item.text
+        })
+      }
+    })
+
+    // Fallback for trailing headings
+    if (pendingHeadings.length > 0) {
+      cards.push({
+        heading: pendingHeadings.map(h => h.endsWith("?") ? h : h + "?").join(" "),
+        text: ""
+      })
+    }
+
+    return cards
+  }
+
+  const serviceCards = getServiceCards(service.paragraphs)
+
   return (
     <article className="service-detail">
       {/* Detail Hero */}
@@ -50,44 +118,34 @@ export default function ServiceDetailPage() {
 
       {/* Main Content */}
       <div className="detail-body-section">
-        <div className="container">
-          {/* Top Navigation Bar */}
-          <div className="detail-top-nav">
-            <button className="btn-back-text" onClick={onBack}>
-              ← Back to Home
-            </button>
-            <div className="detail-breadcrumbs">
-              <span className="crumb" onClick={onBack}>Home</span>
-              <span className="crumb-sep">/</span>
-              <span className="crumb-current">{serviceId.replace(/-/g, ' ')}</span>
+        {SEQUENCE_FOLDERS[serviceId] ? (
+          <>
+            <div className="container">
+              {/* Top Navigation Bar */}
+              <div className="detail-top-nav">
+                <button className="btn-back-text" onClick={onBack}>
+                  ← Back to Home
+                </button>
+                <div className="detail-breadcrumbs">
+                  <span className="crumb" onClick={onBack}>Home</span>
+                  <span className="crumb-sep">/</span>
+                  <span className="crumb-current">{serviceId.replace(/-/g, ' ')}</span>
+                </div>
+              </div>
             </div>
-          </div>
 
-          {/* Render Content Grid. Wrap inside ScrollSequence for professional home renovation page */}
-          {serviceId === 'professional-home-renovation' ? (
-            <ScrollSequence>
+            <ScrollSequence sequenceFolder={SEQUENCE_FOLDERS[serviceId]}>
               <div className="detail-grid">
                 
-                {/* Left Content Column */}
+                {/* Single Card Column Flow */}
                 <div className="detail-content-area">
-                  {service.paragraphs.map((item, idx) => {
-                    if (isHeading(item)) {
-                      return (
-                        <h3 key={idx} className="detail-subheading">
-                          {item.text}
-                        </h3>
-                      )
-                    }
-                    return (
-                      <p key={idx} className="detail-paragraph">
-                        {item.text}
-                      </p>
-                    )
-                  })}
-                </div>
+                  {serviceCards.map((card, idx) => (
+                    <div key={idx} className="detail-paragraph">
+                      {card.heading && <div className="card-question">{card.heading}</div>}
+                      {card.text && <p className="card-answer">{card.text}</p>}
+                    </div>
+                  ))}
 
-                {/* Right Sidebar Column */}
-                <aside className="detail-sidebar">
                   <div className="sidebar-card quote-sidebar">
                     <h3>Request a Free Quote</h3>
                     <p>Ready to start your {serviceId.replace('-', ' ')} project? Fill out our form or call us directly for a free estimate.</p>
@@ -115,29 +173,35 @@ export default function ServiceDetailPage() {
                       <li>✓ Skilled & Trusted Crew</li>
                     </ul>
                   </div>
-                </aside>
+                </div>
 
               </div>
             </ScrollSequence>
-          ) : (
+          </>
+        ) : (
+          <div className="container">
+            {/* Top Navigation Bar */}
+            <div className="detail-top-nav">
+              <button className="btn-back-text" onClick={onBack}>
+                ← Back to Home
+              </button>
+              <div className="detail-breadcrumbs">
+                <span className="crumb" onClick={onBack}>Home</span>
+                <span className="crumb-sep">/</span>
+                <span className="crumb-current">{serviceId.replace(/-/g, ' ')}</span>
+              </div>
+            </div>
+
             <div className="detail-grid">
               
               {/* Left Content Column */}
               <div className="detail-content-area">
-                {service.paragraphs.map((item, idx) => {
-                  if (isHeading(item)) {
-                    return (
-                      <h3 key={idx} className="detail-subheading">
-                        {item.text}
-                      </h3>
-                    )
-                  }
-                  return (
-                    <p key={idx} className="detail-paragraph">
-                      {item.text}
-                    </p>
-                  )
-                })}
+                {serviceCards.map((card, idx) => (
+                  <div key={idx} className="detail-paragraph">
+                    {card.heading && <div className="card-question">{card.heading}</div>}
+                    {card.text && <p className="card-answer">{card.text}</p>}
+                  </div>
+                ))}
               </div>
 
               {/* Right Sidebar Column */}
@@ -172,8 +236,8 @@ export default function ServiceDetailPage() {
               </aside>
 
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </article>
   )

@@ -142,9 +142,25 @@
   border-radius: 2px;
 }
 .detail-paragraph {
+  background: var(--gray-1);
+  border: 1px solid var(--gray-2);
+  border-radius: var(--r-md);
+  padding: 24px 28px;
+  box-shadow: var(--sh-sm);
+}
+.card-question {
+  font-family: var(--font);
+  font-size: 1.18rem;
+  font-weight: 800;
+  color: var(--g800);
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+.card-answer {
   color: var(--gray-7);
   font-size: 1.05rem;
   line-height: 1.8;
+  margin: 0;
 }
 
 /* Sidebar */

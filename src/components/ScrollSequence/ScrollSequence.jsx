@@ -5,24 +5,27 @@ import './ScrollSequence.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
-export default function ScrollSequence({ children }) {
+export default function ScrollSequence({ children, sequenceFolder, totalFrames = 40 }) {
   const containerRef = useRef(null)
   const canvasRef = useRef(null)
   const [loading, setLoading] = useState(true)
   const [progress, setProgress] = useState(0)
   const [images, setImages] = useState([])
-
-  const totalFrames = 40
+  const [hasScrolled, setHasScrolled] = useState(false)
 
   // Preload Images
   useEffect(() => {
+    setLoading(true)
+    setProgress(0)
+    setImages([])
+
     const loadedImages = []
     let loadedCount = 0
 
     for (let i = 1; i <= totalFrames; i++) {
       const img = new Image()
       const frameName = String(i).padStart(3, '0')
-      img.src = `/assets/motion-video/ezgif-frame-${frameName}.jpg`
+      img.src = `/assets/motion-video/${sequenceFolder}/ezgif-frame-${frameName}.jpg`
       
       img.onload = () => {
         loadedCount++
@@ -45,7 +48,7 @@ export default function ScrollSequence({ children }) {
       
       loadedImages.push(img)
     }
-  }, [])
+  }, [sequenceFolder, totalFrames])
 
   // Canvas Scroll Linked Rendering
   useEffect(() => {
@@ -56,21 +59,14 @@ export default function ScrollSequence({ children }) {
     const container = containerRef.current
 
     const sequenceObj = { frame: 0 }
+    let canvasWidth = 0
+    let canvasHeight = 0
+    let dpr = window.devicePixelRatio || 1
 
     // Helper: Draw image scaled center cover
     const renderFrame = (frameIndex) => {
       const img = images[frameIndex]
       if (!img) return
-
-      const dpr = window.devicePixelRatio || 1
-      const rect = canvas.getBoundingClientRect()
-      
-      canvas.width = rect.width * dpr
-      canvas.height = rect.height * dpr
-      ctx.scale(dpr, dpr)
-
-      const canvasWidth = rect.width
-      const canvasHeight = rect.height
 
       const imgWidth = img.width
       const imgHeight = img.height
@@ -79,58 +75,161 @@ export default function ScrollSequence({ children }) {
       const canvasRatio = canvasWidth / canvasHeight
 
       let drawWidth, drawHeight, dx, dy
-      const shift = window.innerWidth > 990 ? 200 : 0 // Shift right on desktop to clear text column
 
       if (imgRatio > canvasRatio) {
         drawHeight = canvasHeight
         drawWidth = canvasHeight * imgRatio
-        dx = (canvasWidth - drawWidth) / 2 + shift
+        dx = (canvasWidth - drawWidth) / 2
         dy = 0
       } else {
         drawWidth = canvasWidth
         drawHeight = canvasWidth / imgRatio
-        dx = shift
+        dx = 0
         dy = (canvasHeight - drawHeight) / 2
       }
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height) // Clear absolute pixel size
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight)
+      
+      // Force high-quality scaling interpolation
+      ctx.imageSmoothingEnabled = true
+      ctx.imageSmoothingQuality = 'high'
+      
       ctx.drawImage(img, dx, dy, drawWidth, drawHeight)
     }
 
-    // Initial render
-    renderFrame(0)
+    const resizeCanvas = () => {
+      const rect = canvas.getBoundingClientRect()
+      dpr = window.devicePixelRatio || 1
+      
+      // Set the backing store dimensions to match the physical screen pixels
+      canvas.width = rect.width * dpr
+      canvas.height = rect.height * dpr
+      
+      canvasWidth = rect.width
+      canvasHeight = rect.height
+
+      // Scale context to draw in virtual CSS dimensions
+      ctx.scale(dpr, dpr)
+      
+      // Reset smoothing configuration after backing store resize
+      ctx.imageSmoothingEnabled = true
+      ctx.imageSmoothingQuality = 'high'
+
+      renderFrame(sequenceObj.frame)
+    }
+
+    // Run initial configuration
+    resizeCanvas()
+
+    // Check initial scroll
+    let autoplayInterval = null
+    let localHasScrolled = window.scrollY > 30
+
+    if (localHasScrolled) {
+      setHasScrolled(true)
+    } else {
+      setHasScrolled(false)
+      // Autoplay cycle
+      let currentFrame = 0
+      autoplayInterval = setInterval(() => {
+        currentFrame = (currentFrame + 1) % totalFrames
+        sequenceObj.frame = currentFrame
+        renderFrame(currentFrame)
+      }, 50) // 50ms per frame (20 fps)
+    }
+
+    // Scroll listener to transition from autoplay to scroll trigger
+    const handleScroll = () => {
+      if (window.scrollY > 30 && !localHasScrolled) {
+        localHasScrolled = true
+        setHasScrolled(true)
+        if (autoplayInterval) {
+          clearInterval(autoplayInterval)
+          autoplayInterval = null
+        }
+        window.removeEventListener('scroll', handleScroll)
+      }
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
 
     // GSAP ScrollTrigger Sequence
-    // Instead of pinning the entire screen, we scrub the frame over the length of the container scroll
     const trigger = ScrollTrigger.create({
       trigger: container,
-      start: 'top bottom-=200', // Starts early
-      end: 'bottom top+=200', // Ends late
-      scrub: 1.2, // Smooth scrubbing to avoid stutter
+      start: 'top top', // Start when the wrapper top meets the screen top
+      end: 'bottom bottom', // End when the wrapper bottom meets the screen bottom
+      scrub: 1.2, // Smooth scrubbing
       onUpdate: (self) => {
-        const frameIndex = Math.min(
-          totalFrames - 1,
-          Math.floor(self.progress * totalFrames)
-        )
-        sequenceObj.frame = frameIndex
-        renderFrame(frameIndex)
+        if (localHasScrolled) {
+          const frameIndex = Math.min(
+            totalFrames - 1,
+            Math.floor(self.progress * totalFrames)
+          )
+          sequenceObj.frame = frameIndex
+          renderFrame(frameIndex)
+        }
       }
     })
 
     // Redraw on window resize
-    const handleResize = () => {
-      renderFrame(sequenceObj.frame)
-    }
-    window.addEventListener('resize', handleResize)
+    window.addEventListener('resize', resizeCanvas)
 
     return () => {
+      if (autoplayInterval) clearInterval(autoplayInterval)
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', resizeCanvas)
       trigger.kill()
-      window.removeEventListener('resize', handleResize)
     }
-  }, [loading, images])
+  }, [loading, images, sequenceFolder])
+
+  // Cards Scroll Animations (fading in/out as they scroll past)
+  useEffect(() => {
+    if (loading) return
+
+    const container = containerRef.current
+    const cards = container.querySelectorAll('.detail-paragraph, .sidebar-card')
+    if (cards.length === 0) return
+
+    const ctx = gsap.context(() => {
+      cards.forEach((card) => {
+        // Fade in from bottom
+        gsap.fromTo(card,
+          { opacity: 0.2, scale: 0.96 },
+          {
+            opacity: 1,
+            scale: 1,
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 95%',  // Starts fading in when card top is 95% of viewport
+              end: 'top 60%',    // Fully highlighted when top reaches 60% of viewport
+              scrub: true,
+              toggleActions: 'play none none reverse'
+            }
+          }
+        )
+
+        // Fade out to top
+        gsap.fromTo(card,
+          { opacity: 1, scale: 1 },
+          {
+            opacity: 0.2,
+            scale: 0.96,
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 12%',   // Starts fading out when top reaches 12% of viewport (clearing navbar)
+              end: 'top -5%',     // Fully faded out when card top is off screen (-5%)
+              scrub: true,
+              toggleActions: 'play none none reverse'
+            }
+          }
+        )
+      })
+    }, containerRef)
+
+    return () => ctx.revert()
+  }, [loading])
 
   return (
-    <div className="scroll-sequence-wrapper" ref={containerRef}>
+    <div className={`scroll-sequence-wrapper${!hasScrolled ? ' intro-active' : ''}`} ref={containerRef}>
       {loading && (
         <div className="scroll-sequence-fallback">
           <div className="scroll-sequence-spinner"></div>
