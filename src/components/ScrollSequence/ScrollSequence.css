@@ -2,15 +2,16 @@
 .scroll-sequence-wrapper {
   position: relative;
   width: 100%;
-  overflow: visible;
-  background: #f3f3f3; /* image canvas background matches ezgif frames */
+  overflow: hidden;
+  background: #f3f3f3; /* light canvas background matches exact ezgif frames for seamless full page animation */
 }
 
-/* Sticky background wrapper - Fullscreen */
+/* Fixed background wrapper - True Fullscreen (Never unpins or leaves white space) */
 .scroll-sequence-sticky {
-  position: sticky;
+  position: fixed;
   top: 0;
-  width: 100%;
+  left: 0;
+  width: 100vw;
   height: 100vh;
   z-index: 1;
   pointer-events: none; /* click-through to text */
@@ -18,8 +19,8 @@
 }
 
 .scroll-sequence-canvas {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   display: block;
   object-fit: cover;
 }
@@ -28,9 +29,9 @@
 .scroll-sequence-content {
   position: relative;
   z-index: 2;
-  margin-top: -100vh; /* pulls the grid container exactly over the canvas */
+  margin-top: 0; /* fixed background takes no document flow height */
   pointer-events: none; /* allow click through on empty areas */
-  min-height: 200vh; /* guarantees sufficient scrolling length for smooth animation scrubbing */
+  min-height: 180vh; /* guarantees sufficient scrolling length for smooth animation scrubbing */
   display: flex;
   flex-direction: column;
   opacity: 1;
@@ -48,36 +49,82 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 700px;
+  max-width: 760px;
   margin: 0 auto;
-  padding: 120px 20px 180px 20px; /* 120px top clears navbar, 180px bottom gives end breathing room */
-  gap: 40px;
+  padding: 160px 24px 220px 24px; /* 160px top clears navbar, 220px bottom gives end breathing room */
+  gap: 80px;
   pointer-events: none;
 }
 
 .scroll-sequence-content .detail-content-area {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 80px;
   width: 100%;
   pointer-events: all;
+}
+
+/* Sequence Header Overlay (Breadcrumbs + Title) */
+.sequence-header-overlay {
+  width: 100%;
+  pointer-events: all;
+}
+
+.sequence-header-overlay .detail-top-nav {
+  margin-bottom: 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.sequence-title-card {
+  background: rgba(10, 26, 13, 0.88);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: 36px 40px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.sequence-title-card .detail-badge {
+  display: inline-block;
+  background: rgba(212, 163, 89, 0.15);
+  color: var(--gold-lt);
+  border: 1px solid rgba(212, 163, 89, 0.3);
+  padding: 6px 18px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.sequence-title-card .detail-title {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1.2;
+  margin: 0;
 }
 
 /* Styled premium glassmorphism dark-green cards */
 .scroll-sequence-content .detail-paragraph,
 .scroll-sequence-content .sidebar-card {
-  background: rgba(13, 27, 17, 0.85); /* Dark green branding background */
+  background: rgba(10, 26, 13, 0.88); /* Dark green branding background */
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 32px 36px;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: 36px 40px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
   margin: 0;
   color: var(--white);
   pointer-events: all;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
   width: 100%;
+  will-change: transform, opacity;
 }
 
 /* Override sidebar light text/border colors for dark backgrounds */
@@ -91,15 +138,15 @@
 }
 
 .scroll-sequence-content .sidebar-card p {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.95rem;
-  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.98rem;
+  line-height: 1.65;
   margin-bottom: 24px;
 }
 
 .scroll-sequence-content .sidebar-card .sidebar-phone-btn {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: var(--white);
   transition: var(--ease);
 }
@@ -117,30 +164,37 @@
 }
 
 .scroll-sequence-content .sidebar-features-list li {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.95);
   font-size: 0.95rem;
   font-weight: 600;
 }
 
 .scroll-sequence-content .card-question {
   color: var(--gold-lt);
+  font-size: 1.22rem;
+  font-weight: 800;
+  margin-bottom: 14px;
+  line-height: 1.35;
 }
 
 .scroll-sequence-content .card-answer {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 1.05rem;
+  line-height: 1.8;
 }
 
 /* Fallback Preloader */
 .scroll-sequence-fallback {
   position: absolute;
   inset: 0;
-  background: var(--white);
+  background: #f3f3f3;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 5;
   gap: 20px;
+  color: var(--dark-2);
 }
 
 .scroll-sequence-spinner {
@@ -154,7 +208,7 @@
 
 .scroll-sequence-loading-text {
   font-size: 0.95rem;
-  color: var(--gray-5);
+  color: var(--gray-7);
   font-weight: 600;
   font-family: var(--sans);
   letter-spacing: 0.05em;
@@ -166,25 +220,38 @@
 
 @media (max-width: 768px) {
   .scroll-sequence-content .detail-grid {
-    padding: 100px 16px 120px 16px;
-    gap: 30px;
+    padding: 120px 16px 140px 16px;
+    gap: 50px;
+    max-width: 100%;
+  }
+  .scroll-sequence-content .detail-content-area {
+    gap: 50px;
   }
   .scroll-sequence-content .detail-paragraph,
   .scroll-sequence-content .sidebar-card {
-    padding: 24px 20px;
-    border-radius: 16px;
+    padding: 26px 22px;
+    border-radius: 18px;
+  }
+  .scroll-sequence-content .card-question {
+    font-size: 1.12rem;
+  }
+  .scroll-sequence-content .card-answer {
+    font-size: 0.98rem;
   }
 }
 
 @media (max-width: 480px) {
   .scroll-sequence-content .detail-grid {
-    padding: 80px 12px 100px 12px;
-    gap: 22px;
+    padding: 100px 12px 120px 12px;
+    gap: 40px;
+  }
+  .scroll-sequence-content .detail-content-area {
+    gap: 40px;
   }
   .scroll-sequence-content .detail-paragraph,
   .scroll-sequence-content .sidebar-card {
     padding: 20px 16px;
-    border-radius: 12px;
+    border-radius: 14px;
   }
   .scroll-sequence-content .card-question {
     font-size: 1.05rem;
@@ -193,6 +260,6 @@
     font-size: .92rem;
   }
   .scroll-sequence-content .sidebar-card h3 {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
   }
 }

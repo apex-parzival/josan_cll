@@ -7,18 +7,18 @@
   width: calc(100% - 40px);
   max-width: 1200px;
   z-index: 1000;
-  background: rgba(10, 26, 13, 0.45);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 26, 13, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--r-md);
   box-shadow: var(--sh-md);
   transition: all var(--ease);
 }
 .navbar.scrolled {
   top: 10px;
-  background: rgba(5, 15, 7, 0.85);
-  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(5, 15, 7, 0.95);
+  border-color: rgba(255, 255, 255, 0.16);
   box-shadow: var(--sh-lg);
 }
 .navbar.retracted {

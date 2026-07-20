@@ -106,20 +106,82 @@ export default function ServiceDetailPage() {
   const serviceCards = getServiceCards(service.paragraphs)
 
   return (
-    <article className="service-detail">
-      {/* Detail Hero */}
-      <header className="detail-hero" style={{ backgroundImage: `url('${image}')` }}>
-        <div className="detail-hero-overlay" />
-        <div className="container detail-hero-content">
-          <span className="detail-badge">Professional Services</span>
-          <h1 className="detail-title">{service.title}</h1>
-        </div>
-      </header>
+    <article className={`service-detail${SEQUENCE_FOLDERS[serviceId] ? ' sequence-active' : ''}`}>
+      {SEQUENCE_FOLDERS[serviceId] ? (
+        <ScrollSequence sequenceFolder={SEQUENCE_FOLDERS[serviceId]}>
+          <div className="detail-grid sequence-grid">
+            
+            {/* Sequence Title & Navigation Block */}
+            <div className="sequence-header-overlay">
+              <div className="detail-top-nav">
+                <button className="btn-back-text" onClick={onBack}>
+                  ← Back to Home
+                </button>
+                <div className="detail-breadcrumbs">
+                  <span className="crumb" onClick={onBack}>Home</span>
+                  <span className="crumb-sep">/</span>
+                  <span className="crumb-current">{serviceId.replace(/-/g, ' ')}</span>
+                </div>
+              </div>
 
-      {/* Main Content */}
-      <div className="detail-body-section">
-        {SEQUENCE_FOLDERS[serviceId] ? (
-          <>
+              <div className="sequence-title-card">
+                <span className="detail-badge">Professional Services</span>
+                <h1 className="detail-title">{service.title}</h1>
+              </div>
+            </div>
+
+            {/* Single Card Column Flow */}
+            <div className="detail-content-area">
+              {serviceCards.map((card, idx) => (
+                <div key={idx} className="detail-paragraph">
+                  {card.heading && <div className="card-question">{card.heading}</div>}
+                  {card.text && <p className="card-answer">{card.text}</p>}
+                </div>
+              ))}
+
+              <div className="sidebar-card quote-sidebar">
+                <h3>Request a Free Quote</h3>
+                <p>Ready to start your {serviceId.replace('-', ' ')} project? Fill out our form or call us directly for a free estimate.</p>
+                <div className="sidebar-contact-links">
+                  <a href="tel:+14030000000" className="sidebar-phone-btn">
+                    📞 Call +1 (403) 000-0000
+                  </a>
+                  <button className="btn btn-primary full" onClick={() => {
+                    const contactSection = document.getElementById('contact')
+                    if (contactSection) {
+                      contactSection.scrollIntoView({ behavior: 'smooth' })
+                    }
+                  }}>
+                    <span>Get a Free Estimate</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="sidebar-card details-sidebar">
+                <h3>Why Work With Us?</h3>
+                <ul className="sidebar-features-list">
+                  <li>✓ 15+ Years Calgary Experience</li>
+                  <li>✓ Fully Licensed & Insured</li>
+                  <li>✓ Transparent Upfront Pricing</li>
+                  <li>✓ Skilled & Trusted Crew</li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </ScrollSequence>
+      ) : (
+        <>
+          {/* Detail Hero */}
+          <header className="detail-hero" style={{ backgroundImage: `url('${image}')` }}>
+            <div className="detail-hero-overlay" />
+            <div className="container detail-hero-content">
+              <span className="detail-badge">Professional Services</span>
+              <h1 className="detail-title">{service.title}</h1>
+            </div>
+          </header>
+
+          <div className="detail-body-section">
             <div className="container">
               {/* Top Navigation Bar */}
               <div className="detail-top-nav">
@@ -132,12 +194,10 @@ export default function ServiceDetailPage() {
                   <span className="crumb-current">{serviceId.replace(/-/g, ' ')}</span>
                 </div>
               </div>
-            </div>
 
-            <ScrollSequence sequenceFolder={SEQUENCE_FOLDERS[serviceId]}>
               <div className="detail-grid">
                 
-                {/* Single Card Column Flow */}
+                {/* Left Content Column */}
                 <div className="detail-content-area">
                   {serviceCards.map((card, idx) => (
                     <div key={idx} className="detail-paragraph">
@@ -145,7 +205,10 @@ export default function ServiceDetailPage() {
                       {card.text && <p className="card-answer">{card.text}</p>}
                     </div>
                   ))}
+                </div>
 
+                {/* Right Sidebar Column */}
+                <aside className="detail-sidebar">
                   <div className="sidebar-card quote-sidebar">
                     <h3>Request a Free Quote</h3>
                     <p>Ready to start your {serviceId.replace('-', ' ')} project? Fill out our form or call us directly for a free estimate.</p>
@@ -173,72 +236,13 @@ export default function ServiceDetailPage() {
                       <li>✓ Skilled & Trusted Crew</li>
                     </ul>
                   </div>
-                </div>
+                </aside>
 
               </div>
-            </ScrollSequence>
-          </>
-        ) : (
-          <div className="container">
-            {/* Top Navigation Bar */}
-            <div className="detail-top-nav">
-              <button className="btn-back-text" onClick={onBack}>
-                ← Back to Home
-              </button>
-              <div className="detail-breadcrumbs">
-                <span className="crumb" onClick={onBack}>Home</span>
-                <span className="crumb-sep">/</span>
-                <span className="crumb-current">{serviceId.replace(/-/g, ' ')}</span>
-              </div>
-            </div>
-
-            <div className="detail-grid">
-              
-              {/* Left Content Column */}
-              <div className="detail-content-area">
-                {serviceCards.map((card, idx) => (
-                  <div key={idx} className="detail-paragraph">
-                    {card.heading && <div className="card-question">{card.heading}</div>}
-                    {card.text && <p className="card-answer">{card.text}</p>}
-                  </div>
-                ))}
-              </div>
-
-              {/* Right Sidebar Column */}
-              <aside className="detail-sidebar">
-                <div className="sidebar-card quote-sidebar">
-                  <h3>Request a Free Quote</h3>
-                  <p>Ready to start your {serviceId.replace('-', ' ')} project? Fill out our form or call us directly for a free estimate.</p>
-                  <div className="sidebar-contact-links">
-                    <a href="tel:+14030000000" className="sidebar-phone-btn">
-                      📞 Call +1 (403) 000-0000
-                    </a>
-                    <button className="btn btn-primary full" onClick={() => {
-                      const contactSection = document.getElementById('contact')
-                      if (contactSection) {
-                        contactSection.scrollIntoView({ behavior: 'smooth' })
-                      }
-                    }}>
-                      <span>Get a Free Estimate</span>
-                    </button>
-                  </div>
-                </div>
-
-                <div className="sidebar-card details-sidebar">
-                  <h3>Why Work With Us?</h3>
-                  <ul className="sidebar-features-list">
-                    <li>✓ 15+ Years Calgary Experience</li>
-                    <li>✓ Fully Licensed & Insured</li>
-                    <li>✓ Transparent Upfront Pricing</li>
-                    <li>✓ Skilled & Trusted Crew</li>
-                  </ul>
-                </div>
-              </aside>
-
             </div>
           </div>
-        )}
-      </div>
+        </>
+      )}
     </article>
   )
 }

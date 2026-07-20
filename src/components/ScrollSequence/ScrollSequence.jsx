@@ -59,14 +59,21 @@ export default function ScrollSequence({ children, sequenceFolder, totalFrames =
     const container = containerRef.current
 
     const sequenceObj = { frame: 0 }
-    let canvasWidth = 0
-    let canvasHeight = 0
-    let dpr = window.devicePixelRatio || 1
 
     // Helper: Draw image scaled center cover
     const renderFrame = (frameIndex) => {
       const img = images[frameIndex]
       if (!img) return
+
+      const dpr = window.devicePixelRatio || 1
+      const rect = canvas.getBoundingClientRect()
+      
+      canvas.width = rect.width * dpr
+      canvas.height = rect.height * dpr
+      ctx.scale(dpr, dpr)
+
+      const canvasWidth = rect.width
+      const canvasHeight = rect.height
 
       const imgWidth = img.width
       const imgHeight = img.height
@@ -88,38 +95,12 @@ export default function ScrollSequence({ children, sequenceFolder, totalFrames =
         dy = (canvasHeight - drawHeight) / 2
       }
 
-      ctx.clearRect(0, 0, canvasWidth, canvasHeight)
-      
-      // Force high-quality scaling interpolation
-      ctx.imageSmoothingEnabled = true
-      ctx.imageSmoothingQuality = 'high'
-      
+      ctx.clearRect(0, 0, canvas.width, canvas.height) // Clear absolute pixel size
       ctx.drawImage(img, dx, dy, drawWidth, drawHeight)
     }
 
-    const resizeCanvas = () => {
-      const rect = canvas.getBoundingClientRect()
-      dpr = window.devicePixelRatio || 1
-      
-      // Set the backing store dimensions to match the physical screen pixels
-      canvas.width = rect.width * dpr
-      canvas.height = rect.height * dpr
-      
-      canvasWidth = rect.width
-      canvasHeight = rect.height
-
-      // Scale context to draw in virtual CSS dimensions
-      ctx.scale(dpr, dpr)
-      
-      // Reset smoothing configuration after backing store resize
-      ctx.imageSmoothingEnabled = true
-      ctx.imageSmoothingQuality = 'high'
-
-      renderFrame(sequenceObj.frame)
-    }
-
-    // Run initial configuration
-    resizeCanvas()
+    // Initial render
+    renderFrame(0)
 
     // Check initial scroll
     let autoplayInterval = null
@@ -171,12 +152,15 @@ export default function ScrollSequence({ children, sequenceFolder, totalFrames =
     })
 
     // Redraw on window resize
-    window.addEventListener('resize', resizeCanvas)
+    const handleResize = () => {
+      renderFrame(sequenceObj.frame)
+    }
+    window.addEventListener('resize', handleResize)
 
     return () => {
       if (autoplayInterval) clearInterval(autoplayInterval)
       window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('resize', resizeCanvas)
+      window.removeEventListener('resize', handleResize)
       trigger.kill()
     }
   }, [loading, images, sequenceFolder])
