@@ -4,31 +4,31 @@ import './ServiceDetailPage.css'
 import servicesData from '../../services_content_all.json'
 import IntroAnimation from '../ScrollSequence/IntroAnimation'
 
-const SEQUENCE_FOLDERS = {
-  'artificial-grass-installation-turf': 'artificial grass',
-  'trees': 'backyard renovation',
-  'basement-renovation': 'basement renovation',
-  'basement-renovations': 'basement renovation 24',
-  'bobcat-service': 'bobcat',
-  'decking': 'deck',
-  'deck-building-services': 'deck building',
-  'fencing-services': 'fencing',
-  'flower-bed': 'flower bed',
-  'framing-service': 'framing',
-  'garage': 'gargage',
-  'gate-building': 'gate building',
-  'gazebo': 'gazebo',
-  'professional-home-renovation': 'home renovation',
-  'kitchen-service': 'kitchen',
-  'lot-gardening': 'lot gardening and landscaping',
-  'new-basement-construction': 'new basement construciton',
-  'painting-service': 'painting',
-  'patios': 'patio',
-  'pergola-services': 'pergola',
-  'railing': 'railing',
-  'retaining-walls': 'retaining wall',
-  'rock': 'rock lanscaping',
-  'sod': 'sod'
+const VIDEO_FILES = {
+  'artificial-grass-installation-turf': 'artificial grass.mp4',
+  'trees': 'backyard renovaiton.mp4',
+  'basement-renovation': 'basement renovation.mp4',
+  'basement-renovations': 'basement renovation 24.mp4',
+  'bobcat-service': 'bobcat.mp4',
+  'decking': 'deck.mp4',
+  'deck-building-services': 'deck building.mp4',
+  'fencing-services': 'fencing.mp4',
+  'flower-bed': 'flower bed.mp4',
+  'framing-service': 'framing.mp4',
+  'garage': 'garage.mp4',
+  'gate-building': 'gate building.mp4',
+  'gazebo': 'gazebo.mp4',
+  'professional-home-renovation': 'home renovation.mp4',
+  'kitchen-service': 'kitchen.mp4',
+  'lot-gardening': 'lot gardening and landscaping.mp4',
+  'new-basement-construction': 'basement construction.mp4',
+  'painting-service': 'painting.mp4',
+  'patios': 'patio.mp4',
+  'pergola-services': 'pergola.mp4',
+  'railing': 'railing.mp4',
+  'retaining-walls': 'retaining walls.mp4',
+  'rock': 'rock landscaping.mp4',
+  'sod': 'sod.mp4'
 }
 
 export default function ServiceDetailPage() {
@@ -114,9 +114,9 @@ export default function ServiceDetailPage() {
   return (
     <article className="service-detail">
       {/* Fullscreen Motion Video Intro Overlay */}
-      {showIntro && SEQUENCE_FOLDERS[serviceId] && (
+      {showIntro && VIDEO_FILES[serviceId] && (
         <IntroAnimation
-          sequenceFolder={SEQUENCE_FOLDERS[serviceId]}
+          videoFile={VIDEO_FILES[serviceId]}
           onComplete={handleIntroComplete}
         />
       )}

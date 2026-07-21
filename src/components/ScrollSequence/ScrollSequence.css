@@ -277,7 +277,8 @@
   animation: intro-fade-in 0.3s ease;
 }
 
-.intro-animation-canvas {
+.intro-animation-canvas,
+.intro-animation-video {
   width: 100vw;
   height: 100vh;
   display: block;
