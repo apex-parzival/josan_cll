@@ -54,12 +54,8 @@ export default function Navbar() {
       const currentScrollY = window.pageYOffset
       setScrolled(currentScrollY > 80)
 
-      // Retract navbar when scrolling down, show when scrolling up
-      if (currentScrollY > lastScrollY && currentScrollY > 150 && !menuOpen) {
-        setVisible(false) // Retract
-      } else {
-        setVisible(true) // Show
-      }
+      // Keep navbar visible always when scrolling
+      setVisible(true)
 
       lastScrollY = currentScrollY
 

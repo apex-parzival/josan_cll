@@ -77,24 +77,27 @@ export default function Contact() {
             
             <div className="contact-details">
               <div className="contact-item">
-                <div className="contact-icon">📞</div>
+                <div className="contact-icon">📍</div>
                 <div>
-                  <strong>Phone</strong>
-                  <a href="tel:+14030000000">+1 (403) 000-0000</a>
+                  <strong>Head Office</strong>
+                  <span>4029 Cornerstone BLVD NE, Calgary T3N 2A5</span>
                 </div>
               </div>
               <div className="contact-item">
                 <div className="contact-icon">✉️</div>
                 <div>
-                  <strong>Email</strong>
+                  <strong>Email Us</strong>
                   <a href="mailto:info@josancll.ca">info@josancll.ca</a>
                 </div>
               </div>
               <div className="contact-item">
-                <div className="contact-icon">📍</div>
+                <div className="contact-icon">📞</div>
                 <div>
-                  <strong>Location</strong>
-                  <span>Calgary, Alberta, Canada</span>
+                  <strong>Call Us</strong>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <a href="tel:5873944029">+1 (587) 394-4029</a>
+                    <a href="tel:5872278001">+1 (587) 227-8001</a>
+                  </div>
                 </div>
               </div>
               <div className="contact-item">
@@ -250,6 +253,25 @@ export default function Contact() {
             </form>
           </div>
 
+        </div>
+
+        {/* Google Maps Integration */}
+        <div className="contact-map-card reveal up" style={{ marginTop: '50px' }}>
+          <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.4rem', color: 'var(--dark-2)', marginBottom: '16px' }}>
+            📍 Our Location & Head Office
+          </h3>
+          <div style={{ width: '100%', height: '380px', borderRadius: '20px', overflow: 'hidden', boxShadow: 'var(--sh-md)' }}>
+            <iframe
+              title="Josan Construction & Landscaping LTD Head Office Location"
+              src="https://maps.google.com/maps?q=4029%20Cornerstone%20Blvd%20NE,%20Calgary,%20AB%20T3N%202A5,%20Canada&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
         </div>
       </div>
     </section>

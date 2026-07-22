@@ -5,34 +5,55 @@ export default function IntroAnimation({ videoFile, onComplete }) {
   const videoRef = useRef(null)
 
   useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
-
-    video.currentTime = 0
-    video.play().catch(() => {})
-
-    const handleEnded = () => {
-      onComplete()
+    let finished = false
+    const finish = () => {
+      if (!finished) {
+        finished = true
+        onComplete()
+      }
     }
 
-    video.addEventListener('ended', handleEnded)
+    const video = videoRef.current
+    if (video) {
+      video.currentTime = 0
+      const playPromise = video.play()
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // If autoplay fails or is blocked by browser, finish intro immediately
+          finish()
+        })
+      }
+      video.addEventListener('ended', finish)
+      video.addEventListener('error', finish)
+    } else {
+      finish()
+    }
 
-    // Listener to skip intro on user scroll, touch, wheel, or key press
+    // Safety fallback: Never leave overlay for more than 4 seconds
+    const safetyTimer = setTimeout(finish, 4000)
+
+    // User interaction skip handler
     const handleSkip = () => {
-      onComplete()
+      finish()
     }
 
     window.addEventListener('scroll', handleSkip, { passive: true })
     window.addEventListener('wheel', handleSkip, { passive: true })
     window.addEventListener('touchmove', handleSkip, { passive: true })
     window.addEventListener('keydown', handleSkip, { passive: true })
+    window.addEventListener('click', handleSkip, { passive: true })
 
     return () => {
-      video.removeEventListener('ended', handleEnded)
+      clearTimeout(safetyTimer)
+      if (video) {
+        video.removeEventListener('ended', finish)
+        video.removeEventListener('error', finish)
+      }
       window.removeEventListener('scroll', handleSkip)
       window.removeEventListener('wheel', handleSkip)
       window.removeEventListener('touchmove', handleSkip)
       window.removeEventListener('keydown', handleSkip)
+      window.removeEventListener('click', handleSkip)
     }
   }, [videoFile, onComplete])
 
@@ -40,12 +61,13 @@ export default function IntroAnimation({ videoFile, onComplete }) {
     <div className="intro-animation-overlay" onClick={onComplete}>
       <video
         ref={videoRef}
-        src={`/assets/videos/${encodeURIComponent(videoFile)}`}
+        src={`/assets/videos/${videoFile}`}
         className="intro-animation-video"
         autoPlay
         muted
         playsInline
         preload="auto"
+        onError={onComplete}
       />
       <div className="intro-skip-badge">
         <span>Scroll or Tap to Skip ↓</span>

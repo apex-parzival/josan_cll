@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom'
 import './ServiceDetailPage.css'
 import servicesData from '../../services_content_all.json'
 import IntroAnimation from '../ScrollSequence/IntroAnimation'
+import ServicesCarousel from '../Services/ServicesCarousel'
+import Marquee from '../Marquee/Marquee'
 
 const VIDEO_FILES = {
   'artificial-grass-installation-turf': 'artificial grass.mp4',
@@ -130,6 +132,9 @@ export default function ServiceDetailPage() {
         </div>
       </header>
 
+      {/* Green Marquee Ticker Strip */}
+      <Marquee />
+
       {/* Main Content Body - Info in Cards */}
       <div className="detail-body-section">
         <div className="container">
@@ -161,9 +166,12 @@ export default function ServiceDetailPage() {
               <div className="sidebar-card quote-sidebar">
                 <h3>Request a Free Quote</h3>
                 <p>Ready to start your {serviceId.replace('-', ' ')} project? Fill out our form or call us directly for a free estimate.</p>
-                <div className="sidebar-contact-links">
-                  <a href="tel:+14030000000" className="sidebar-phone-btn">
-                    📞 Call +1 (403) 000-0000
+                <div className="sidebar-contact-links" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <a href="tel:5873944029" className="sidebar-phone-btn">
+                    📞 Call +1 (587) 394-4029
+                  </a>
+                  <a href="tel:5872278001" className="sidebar-phone-btn" style={{ background: 'var(--g700)' }}>
+                    📞 Call +1 (587) 227-8001
                   </a>
                   <button className="btn btn-primary full" onClick={() => {
                     const contactSection = document.getElementById('contact')

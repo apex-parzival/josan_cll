@@ -105,19 +105,22 @@ export default function Footer() {
             </div>
 
             <div className="footer-col">
-              <h4>Contact</h4>
+              <h4>Contact Us</h4>
               <ul className="footer-contact">
                 <li>
-                  <span>📞</span>
-                  <a href="tel:+14030000000">+1 (403) 000-0000</a>
+                  <span>📍</span>
+                  <span>4029 Cornerstone BLVD NE, Calgary T3N 2A5</span>
                 </li>
                 <li>
                   <span>✉️</span>
                   <a href="mailto:info@josancll.ca">info@josancll.ca</a>
                 </li>
                 <li>
-                  <span>📍</span>
-                  <span>Calgary, Alberta, Canada</span>
+                  <span>📞</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                    <a href="tel:5873944029">+1 (587) 394-4029</a>
+                    <a href="tel:5872278001">+1 (587) 227-8001</a>
+                  </div>
                 </li>
                 <li>
                   <span>🕐</span>
