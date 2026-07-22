@@ -3,8 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom'
 import './ServiceDetailPage.css'
 import servicesData from '../../services_content_all.json'
 import IntroAnimation from '../ScrollSequence/IntroAnimation'
-import ServicesCarousel from '../Services/ServicesCarousel'
 import Marquee from '../Marquee/Marquee'
+import serviceGalleryMap from '../../service_galleries_map.json'
 
 const VIDEO_FILES = {
   'artificial-grass-installation-turf': 'artificial grass.mp4',
@@ -37,9 +37,13 @@ export default function ServiceDetailPage() {
   const { serviceId } = useParams()
   const navigate = useNavigate()
   const [showIntro, setShowIntro] = useState(true)
+  const [selectedPhoto, setSelectedPhoto] = useState(null)
+  const [failedPhotos, setFailedPhotos] = useState([])
 
   const service = servicesData[serviceId]
   const image = service ? service.image : '/assets/sod.webp'
+  const servicePhotos = serviceGalleryMap[serviceId] || []
+  const activePhotos = servicePhotos.filter(photo => !failedPhotos.includes(photo))
 
   const onBack = () => {
     navigate('/')
@@ -159,6 +163,26 @@ export default function ServiceDetailPage() {
                   {card.text && <p className="card-answer">{card.text}</p>}
                 </div>
               ))}
+
+              {/* Real Project Gallery for this Service */}
+              {activePhotos.length > 0 && (
+                <div className="service-gallery-block">
+                  <h3 className="service-gallery-title">📷 Real {service.title} Project Photos</h3>
+                  <div className="service-gallery-grid">
+                    {activePhotos.map((photo, pIdx) => (
+                      <div key={pIdx} className="service-gallery-thumb" onClick={() => setSelectedPhoto(photo)}>
+                        <img 
+                          src={photo} 
+                          alt={`${service.title} Project Photo ${pIdx + 1}`} 
+                          loading="lazy" 
+                          onError={() => setFailedPhotos(prev => [...prev, photo])}
+                        />
+                        <div className="thumb-overlay">🔍 View</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Right Sidebar Column */}
@@ -197,6 +221,16 @@ export default function ServiceDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* Lightbox Photo Modal */}
+      {selectedPhoto && (
+        <div className="testimonial-video-modal" onClick={() => setSelectedPhoto(null)}>
+          <div className="modal-content photo-modal" onClick={e => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setSelectedPhoto(null)}>✕</button>
+            <img src={selectedPhoto} alt="Project Full View" className="modal-photo" />
+          </div>
+        </div>
+      )}
     </article>
   )
 }

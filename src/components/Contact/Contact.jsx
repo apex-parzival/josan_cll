@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './Contact.css'
+import { sendEnquiryEmail } from '../../services/emailService'
 
 export default function Contact() {
   const [form, setForm] = useState({
@@ -54,15 +55,15 @@ export default function Contact() {
 
     setLoading(true)
     
-    // Simulate API request
-    await new Promise(resolve => setTimeout(resolve, 1800))
+    // Send email to info@josancll.ca via Resend API
+    await sendEnquiryEmail(form)
 
     setLoading(false)
     setSuccess(true)
     setForm({ name: '', email: '', phone: '', service: '', message: '' })
     setErrors({})
 
-    setTimeout(() => setSuccess(false), 6000)
+    setTimeout(() => setSuccess(false), 8000)
   }
 
   return (

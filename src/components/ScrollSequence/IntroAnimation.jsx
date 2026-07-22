@@ -6,6 +6,8 @@ export default function IntroAnimation({ videoFile, onComplete }) {
 
   useEffect(() => {
     let finished = false
+    let safetyTimer = null
+
     const finish = () => {
       if (!finished) {
         finished = true
@@ -14,51 +16,61 @@ export default function IntroAnimation({ videoFile, onComplete }) {
     }
 
     const video = videoRef.current
+
     if (video) {
       video.currentTime = 0
+      // Slow down animation video to 70% speed (30% slower) for smoother, premium transition
+      video.playbackRate = 0.70
+
+      const handleLoadedMetadata = () => {
+        const dur = video.duration || 8
+        const playSpeed = video.playbackRate || 0.70
+        if (safetyTimer) clearTimeout(safetyTimer)
+        // Adjust safety buffer based on the slower playbackRate
+        safetyTimer = setTimeout(finish, Math.max(((dur / playSpeed) + 2.5) * 1000, 9000))
+      }
+
+      video.addEventListener('loadedmetadata', handleLoadedMetadata)
+      video.addEventListener('ended', finish)
+      video.addEventListener('error', finish)
+
       const playPromise = video.play()
       if (playPromise !== undefined) {
         playPromise.catch(() => {
-          // If autoplay fails or is blocked by browser, finish intro immediately
           finish()
         })
       }
-      video.addEventListener('ended', finish)
-      video.addEventListener('error', finish)
-    } else {
-      finish()
-    }
 
-    // Safety fallback: Never leave overlay for more than 4 seconds
-    const safetyTimer = setTimeout(finish, 4000)
+      // Default safety fallback (15s) for slower playback rate
+      safetyTimer = setTimeout(finish, 15000)
 
-    // User interaction skip handler
-    const handleSkip = () => {
-      finish()
-    }
-
-    window.addEventListener('scroll', handleSkip, { passive: true })
-    window.addEventListener('wheel', handleSkip, { passive: true })
-    window.addEventListener('touchmove', handleSkip, { passive: true })
-    window.addEventListener('keydown', handleSkip, { passive: true })
-    window.addEventListener('click', handleSkip, { passive: true })
-
-    return () => {
-      clearTimeout(safetyTimer)
-      if (video) {
+      return () => {
+        if (safetyTimer) clearTimeout(safetyTimer)
+        video.removeEventListener('loadedmetadata', handleLoadedMetadata)
         video.removeEventListener('ended', finish)
         video.removeEventListener('error', finish)
       }
-      window.removeEventListener('scroll', handleSkip)
-      window.removeEventListener('wheel', handleSkip)
-      window.removeEventListener('touchmove', handleSkip)
-      window.removeEventListener('keydown', handleSkip)
-      window.removeEventListener('click', handleSkip)
+    } else {
+      finish()
     }
   }, [videoFile, onComplete])
 
+  // Skip handler: Only skip if user intentionally scrolls down past 60px
+  useEffect(() => {
+    const initialScrollY = window.scrollY
+
+    const handleScroll = () => {
+      if (Math.abs(window.scrollY - initialScrollY) > 60) {
+        onComplete()
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [onComplete])
+
   return (
-    <div className="intro-animation-overlay" onClick={onComplete}>
+    <div className="intro-animation-overlay">
       <video
         ref={videoRef}
         src={`/assets/videos/${videoFile}`}
@@ -67,11 +79,10 @@ export default function IntroAnimation({ videoFile, onComplete }) {
         muted
         playsInline
         preload="auto"
-        onError={onComplete}
       />
-      <div className="intro-skip-badge">
-        <span>Scroll or Tap to Skip ↓</span>
-      </div>
+      <button className="intro-skip-badge" onClick={onComplete} aria-label="Skip intro animation">
+        <span>Skip Intro ↓</span>
+      </button>
     </div>
   )
 }
