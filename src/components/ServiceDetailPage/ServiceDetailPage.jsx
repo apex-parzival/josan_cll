@@ -122,6 +122,7 @@ export default function ServiceDetailPage() {
       {/* Fullscreen Motion Video Intro Overlay */}
       {showIntro && VIDEO_FILES[serviceId] && (
         <IntroAnimation
+          key={serviceId}
           videoFile={VIDEO_FILES[serviceId]}
           onComplete={handleIntroComplete}
         />

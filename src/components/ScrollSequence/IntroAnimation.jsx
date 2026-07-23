@@ -5,6 +5,9 @@ export default function IntroAnimation({ videoFile, onComplete }) {
   const videoRef = useRef(null)
 
   useEffect(() => {
+    // Immediately reset window scroll position to top
+    window.scrollTo(0, 0)
+
     let finished = false
     let safetyTimer = null
 
@@ -19,29 +22,41 @@ export default function IntroAnimation({ videoFile, onComplete }) {
 
     if (video) {
       video.currentTime = 0
-      // Slow down animation video to 70% speed (30% slower) for smoother, premium transition
-      video.playbackRate = 0.70
+
+      const applySpeed = () => {
+        try {
+          video.playbackRate = 0.70
+        } catch (e) {
+          // ignore playbackRate setting error
+        }
+      }
 
       const handleLoadedMetadata = () => {
+        applySpeed()
         const dur = video.duration || 8
         const playSpeed = video.playbackRate || 0.70
         if (safetyTimer) clearTimeout(safetyTimer)
-        // Adjust safety buffer based on the slower playbackRate
-        safetyTimer = setTimeout(finish, Math.max(((dur / playSpeed) + 2.5) * 1000, 9000))
+        safetyTimer = setTimeout(finish, Math.max(((dur / playSpeed) + 2.5) * 1000, 8000))
       }
 
       video.addEventListener('loadedmetadata', handleLoadedMetadata)
       video.addEventListener('ended', finish)
       video.addEventListener('error', finish)
+      video.addEventListener('play', applySpeed)
+
+      video.muted = true
+      video.playsInline = true
 
       const playPromise = video.play()
       if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          finish()
+        playPromise.catch((err) => {
+          console.warn('Autoplay fallback:', err)
+          video.muted = true
+          video.play().catch(() => finish())
         })
       }
 
-      // Default safety fallback (15s) for slower playback rate
+      // Default safety fallback (15s)
       safetyTimer = setTimeout(finish, 15000)
 
       return () => {
@@ -49,24 +64,31 @@ export default function IntroAnimation({ videoFile, onComplete }) {
         video.removeEventListener('loadedmetadata', handleLoadedMetadata)
         video.removeEventListener('ended', finish)
         video.removeEventListener('error', finish)
+        video.removeEventListener('play', applySpeed)
       }
     } else {
       finish()
     }
   }, [videoFile, onComplete])
 
-  // Skip handler: Only skip if user intentionally scrolls down past 60px
+  // Skip handler: Grace period of 600ms prevents route scroll resets from skipping
   useEffect(() => {
-    const initialScrollY = window.scrollY
+    let canSkip = false
+    const graceTimer = setTimeout(() => {
+      canSkip = true
+    }, 600)
 
     const handleScroll = () => {
-      if (Math.abs(window.scrollY - initialScrollY) > 60) {
+      if (canSkip && window.scrollY > 100) {
         onComplete()
       }
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+    return () => {
+      clearTimeout(graceTimer)
+      window.removeEventListener('scroll', handleScroll)
+    }
   }, [onComplete])
 
   return (
