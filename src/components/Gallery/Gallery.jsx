@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './Gallery.css'
 
 const GALLERY_ITEMS = [
@@ -10,6 +11,7 @@ const GALLERY_ITEMS = [
 ]
 
 export default function Gallery() {
+  const navigate = useNavigate()
   const [activeImg, setActiveImg] = useState(null)
 
   // Listen to Escape key to close lightbox
@@ -44,6 +46,19 @@ export default function Gallery() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* View Full Gallery CTA */}
+        <div className="gallery-cta reveal up" style={{ textAlign: 'center', marginTop: '40px' }}>
+          <p style={{ color: 'var(--gray-5)', marginBottom: '16px', fontSize: '0.95rem' }}>
+            Explore 195+ real project photos organized by service category.
+          </p>
+          <button
+            className="btn btn-primary"
+            onClick={() => { navigate('/gallery'); window.scrollTo({ top: 0, behavior: 'instant' }) }}
+          >
+            <span>View Full Gallery →</span>
+          </button>
         </div>
 
       </div>

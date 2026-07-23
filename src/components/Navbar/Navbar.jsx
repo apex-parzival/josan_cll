@@ -99,6 +99,20 @@ export default function Navbar() {
   }
 
   function handleLinkClick(id) {
+    // Page-level routes
+    if (id === 'gallery') {
+      navigate('/gallery')
+      window.scrollTo({ top: 0, behavior: 'instant' })
+      closeMobile()
+      return
+    }
+    if (id === 'reviews') {
+      navigate('/reviews')
+      window.scrollTo({ top: 0, behavior: 'instant' })
+      closeMobile()
+      return
+    }
+    // Scroll-to-section routes
     if (location.pathname !== '/') {
       navigate('/')
       setTimeout(() => {
@@ -119,7 +133,8 @@ export default function Navbar() {
     { id: 'home',     label: 'Home' },
     { id: 'about',    label: 'About Us' },
     { id: 'services', label: 'Services', hasDrop: true },
-    { id: 'gallery',  label: 'Gallery' },
+    { id: 'gallery',  label: 'Gallery', isPage: true },
+    { id: 'reviews',  label: 'Reviews', isPage: true },
     { id: 'contact',  label: 'Contact Us' },
   ]
 
@@ -134,7 +149,7 @@ export default function Navbar() {
 
           {/* Desktop links */}
           <ul className="nav-links">
-            {links.map(({ id, label, hasDrop }) =>
+            {links.map(({ id, label, hasDrop, isPage }) =>
               hasDrop ? (
                 <li key={id} className="has-dropdown">
                   <button
@@ -156,7 +171,11 @@ export default function Navbar() {
               ) : (
                 <li key={id}>
                   <button
-                    className={`nav-link${activeId === id && location.pathname === '/' ? ' active' : ''}`}
+                    className={`nav-link${
+                      isPage
+                        ? location.pathname === `/${id}` ? ' active' : ''
+                        : activeId === id && location.pathname === '/' ? ' active' : ''
+                    }`}
                     onClick={() => handleLinkClick(id)}
                   >
                     {label}

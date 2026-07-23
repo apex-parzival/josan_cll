@@ -95,7 +95,7 @@ export default function IntroAnimation({ videoFile, onComplete }) {
     <div className="intro-animation-overlay">
       <video
         ref={videoRef}
-        src={`/assets/videos/${videoFile}`}
+        src={`/assets/videos/${encodeURIComponent(videoFile)}`}
         className="intro-animation-video"
         autoPlay
         muted

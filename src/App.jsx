@@ -14,6 +14,8 @@ import Contact from './components/Contact/Contact'
 import Footer from './components/Footer/Footer'
 import BackToTop from './components/BackToTop/BackToTop'
 import ServiceDetailPage from './components/ServiceDetailPage/ServiceDetailPage'
+import GalleryPage from './components/GalleryPage/GalleryPage'
+import ReviewsPage from './components/ReviewsPage/ReviewsPage'
 
 function ScrollRevealManager() {
   const location = useLocation()
@@ -56,6 +58,18 @@ export default function App() {
           <Route path="/services/:serviceId" element={
             <>
               <ServiceDetailPage />
+              <Contact />
+            </>
+          } />
+          <Route path="/gallery" element={
+            <>
+              <GalleryPage />
+              <Contact />
+            </>
+          } />
+          <Route path="/reviews" element={
+            <>
+              <ReviewsPage />
               <Contact />
             </>
           } />
