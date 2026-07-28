@@ -4,16 +4,16 @@ import './GalleryPage.css'
 import serviceGalleryMap from '../../service_galleries_map.json'
 
 const CATEGORIES = [
-  { id: 'all', label: 'All Photos', icon: '🖼️', serviceId: null },
-  { id: 'artificial-grass-installation-turf', label: 'Artificial Grass & Turf', icon: '🌿', serviceId: 'artificial-grass-installation-turf' },
-  { id: 'sod', label: 'Sod Installation', icon: '🌲', serviceId: 'sod' },
-  { id: 'decking', label: 'Decking', icon: '🏗️', serviceId: 'decking' },
-  { id: 'deck-building-services', label: 'Deck Building', icon: '🪵', serviceId: 'deck-building-services' },
-  { id: 'fencing-services', label: 'Fencing Services', icon: '🔧', serviceId: 'fencing-services' },
-  { id: 'patios', label: "Patio's", icon: '🪨', serviceId: 'patios' },
-  { id: 'retaining-walls', label: 'Retaining Walls', icon: '⛏️', serviceId: 'retaining-walls' },
-  { id: 'lot-gardening', label: 'Lot Gardening', icon: '🌳', serviceId: 'lot-gardening' },
-  { id: 'basement-renovation', label: 'Basement Renovation', icon: '🏠', serviceId: 'basement-renovation' },
+  { id: 'all', label: 'All Photos', icon: '🖼️', serviceId: null, bg: '/assets/sod.webp' },
+  { id: 'artificial-grass-installation-turf', label: 'Artificial Grass & Turf', icon: '🌿', serviceId: 'artificial-grass-installation-turf', bg: '/assets/artificial-grass-installation-turf.webp' },
+  { id: 'sod', label: 'Sod Installation', icon: '🌲', serviceId: 'sod', bg: '/assets/sod.webp' },
+  { id: 'decking', label: 'Decking', icon: '🏗️', serviceId: 'decking', bg: '/assets/decking.webp' },
+  { id: 'deck-building-services', label: 'Deck Building', icon: '🪵', serviceId: 'deck-building-services', bg: '/assets/deck-building-services.webp' },
+  { id: 'fencing-services', label: 'Fencing Services', icon: '🔧', serviceId: 'fencing-services', bg: '/assets/fencing-services.webp' },
+  { id: 'patios', label: "Patio's", icon: '🪨', serviceId: 'patios', bg: '/assets/patios.webp' },
+  { id: 'retaining-walls', label: 'Retaining Walls', icon: '⛏️', serviceId: 'retaining-walls', bg: '/assets/retaining-walls.webp' },
+  { id: 'lot-gardening', label: 'Lot Gardening', icon: '🌳', serviceId: 'lot-gardening', bg: '/assets/lot-gardening.webp' },
+  { id: 'basement-renovation', label: 'Basement Renovation', icon: '🏠', serviceId: 'basement-renovation', bg: '/assets/basement-renovation-home.webp' },
 ]
 
 function getAllPhotos() {
@@ -101,23 +101,31 @@ export default function GalleryPage() {
         </div>
       </header>
 
-      {/* Category Filter Tabs */}
-      <div className="gallery-filter-bar">
+      {/* Category Filter Cards */}
+      <div className="gallery-categories-section">
         <div className="container">
-          <div className="gallery-tabs-scroll">
+          <div className="section-header" style={{ marginBottom: '32px', textAlign: 'left' }}>
+            <div className="section-label" style={{ margin: '0 0 10px 0' }}>Filter Work</div>
+            <h2 className="section-title" style={{ margin: '0' }}>Select a Service Category</h2>
+          </div>
+          <div className="gallery-categories-grid">
             {CATEGORIES.map(cat => {
               const count = getCategoryCount(cat.id)
               if (cat.id !== 'all' && count === 0) return null
               return (
-                <button
+                <div
                   key={cat.id}
-                  className={`gallery-tab-btn${activeTab === cat.id ? ' active' : ''}`}
+                  className={`category-card${activeTab === cat.id ? ' active' : ''}`}
                   onClick={() => setActiveTab(cat.id)}
+                  style={{ backgroundImage: `url('${cat.bg}')` }}
                 >
-                  <span className="tab-icon">{cat.icon}</span>
-                  <span className="tab-label">{cat.label}</span>
-                  <span className="tab-count">{count}</span>
-                </button>
+                  <div className="category-card-overlay" />
+                  <div className="category-card-content">
+                    <span className="category-card-icon">{cat.icon}</span>
+                    <h3 className="category-card-title">{cat.label}</h3>
+                    <span className="category-card-count">{count} Photos</span>
+                  </div>
+                </div>
               )
             })}
           </div>

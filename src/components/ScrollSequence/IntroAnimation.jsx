@@ -71,23 +71,54 @@ export default function IntroAnimation({ videoFile, onComplete }) {
     }
   }, [videoFile, onComplete])
 
-  // Skip handler: Grace period of 600ms prevents route scroll resets from skipping
+  // Skip handler: Skip only when the user actively interacts with wheel, touch, or keyboard
   useEffect(() => {
+    // Disable automatic browser scroll restoration while intro is active
+    const originalRestoration = 'scrollRestoration' in window.history ? window.history.scrollRestoration : 'auto'
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual'
+    }
+    window.scrollTo(0, 0)
+
     let canSkip = false
     const graceTimer = setTimeout(() => {
       canSkip = true
-    }, 600)
+    }, 800)
 
-    const handleScroll = () => {
-      if (canSkip && window.scrollY > 100) {
+    const triggerSkip = () => {
+      if (canSkip) {
         onComplete()
       }
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
+    const handleWheel = (e) => {
+      if (Math.abs(e.deltaY) > 10) {
+        triggerSkip()
+      }
+    }
+
+    const handleTouch = () => {
+      triggerSkip()
+    }
+
+    const handleKeyDown = (e) => {
+      if (['ArrowDown', 'PageDown', ' ', 'Up', 'Down'].includes(e.key)) {
+        triggerSkip()
+      }
+    }
+
+    window.addEventListener('wheel', handleWheel, { passive: true })
+    window.addEventListener('touchmove', handleTouch, { passive: true })
+    window.addEventListener('keydown', handleKeyDown)
+
     return () => {
       clearTimeout(graceTimer)
-      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('wheel', handleWheel)
+      window.removeEventListener('touchmove', handleTouch)
+      window.removeEventListener('keydown', handleKeyDown)
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = originalRestoration
+      }
     }
   }, [onComplete])
 
