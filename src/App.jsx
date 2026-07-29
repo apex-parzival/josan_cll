@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { HashRouter, Routes, Route, useLocation } from 'react-router-dom'
+import SEO from './components/SEO/SEO'
 import Navbar from './components/Navbar/Navbar'
 import Hero from './components/Hero/Hero'
 import Marquee from './components/Marquee/Marquee'
@@ -38,6 +39,7 @@ export default function App() {
   return (
     <HashRouter>
       <ScrollRevealManager />
+      <SEO />
       <Navbar />
       <main>
         <Routes>
