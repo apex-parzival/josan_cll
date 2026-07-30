@@ -16,7 +16,10 @@
     "/assets/testimonials/photos/photo_014.jpg",
     "/assets/testimonials/photos/photo_015.jpg"
   ],
-  "trees": [],
+  "trees": [
+    "/assets/trees.webp",
+    "/assets/lot-gardening.webp"
+  ],
   "basement-renovation": [
     "/assets/testimonials/photos/photo_146.jpg",
     "/assets/testimonials/photos/photo_147.jpg",
@@ -44,8 +47,14 @@
     "/assets/testimonials/photos/photo_169.jpeg",
     "/assets/testimonials/photos/photo_170.jpeg"
   ],
-  "basement-renovations": [],
-  "bobcat-service": [],
+  "basement-renovations": [
+    "/assets/basement-renovations.webp",
+    "/assets/basement-renovation-home.webp"
+  ],
+  "bobcat-service": [
+    "/assets/bobcat-service.webp",
+    "/assets/rock.webp"
+  ],
   "decking": [
     "/assets/testimonials/photos/photo_036.jpg",
     "/assets/testimonials/photos/photo_037.jpg",
@@ -112,13 +121,34 @@
     "/assets/testimonials/photos/photo_094.jpg",
     "/assets/testimonials/photos/photo_095.jpg"
   ],
-  "flower-bed": [],
-  "framing-service": [],
-  "garage": [],
-  "gate-building": [],
-  "gazebo": [],
-  "professional-home-renovation": [],
-  "kitchen-service": [],
+  "flower-bed": [
+    "/assets/flower-bed.webp",
+    "/assets/lot-gardening.webp"
+  ],
+  "framing-service": [
+    "/assets/framing-service.webp",
+    "/assets/new-basement-construction.webp"
+  ],
+  "garage": [
+    "/assets/Garage.webp",
+    "/assets/framing-service.webp"
+  ],
+  "gate-building": [
+    "/assets/gate-building.webp",
+    "/assets/fencing-services.webp"
+  ],
+  "gazebo": [
+    "/assets/gazebo.webp",
+    "/assets/pergola-services.webp"
+  ],
+  "professional-home-renovation": [
+    "/assets/professional-home-renovation.webp",
+    "/assets/kitchen-service.webp"
+  ],
+  "kitchen-service": [
+    "/assets/kitchen-service.webp",
+    "/assets/professional-home-renovation.webp"
+  ],
   "lot-gardening": [
     "/assets/testimonials/photos/photo_171.jpeg",
     "/assets/testimonials/photos/photo_172.jpeg",
@@ -146,8 +176,14 @@
     "/assets/testimonials/photos/photo_194.jpeg",
     "/assets/testimonials/photos/photo_195.jpeg"
   ],
-  "new-basement-construction": [],
-  "painting-service": [],
+  "new-basement-construction": [
+    "/assets/new-basement-construction.webp",
+    "/assets/basement-renovations.webp"
+  ],
+  "painting-service": [
+    "/assets/painting-service.webp",
+    "/assets/kitchen-service.webp"
+  ],
   "patios": [
     "/assets/testimonials/photos/photo_096.jpg",
     "/assets/testimonials/photos/photo_097.jpg",
@@ -175,8 +211,14 @@
     "/assets/testimonials/photos/photo_119.jpg",
     "/assets/testimonials/photos/photo_120.jpg"
   ],
-  "pergola-services": [],
-  "railing": [],
+  "pergola-services": [
+    "/assets/pergola-services.webp",
+    "/assets/gazebo.webp"
+  ],
+  "railing": [
+    "/assets/railing.webp",
+    "/assets/decking.webp"
+  ],
   "retaining-walls": [
     "/assets/testimonials/photos/photo_121.jpg",
     "/assets/testimonials/photos/photo_122.jpg",
@@ -204,7 +246,10 @@
     "/assets/testimonials/photos/photo_144.jpg",
     "/assets/testimonials/photos/photo_145.jpg"
   ],
-  "rock": [],
+  "rock": [
+    "/assets/rock.webp",
+    "/assets/retaining-walls.webp"
+  ],
   "sod": [
     "/assets/testimonials/photos/photo_016.jpg",
     "/assets/testimonials/photos/photo_017.jpg",

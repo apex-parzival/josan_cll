@@ -6,14 +6,27 @@ import serviceGalleryMap from '../../service_galleries_map.json'
 const CATEGORIES = [
   { id: 'all', label: 'All Photos', icon: '🖼️', serviceId: null, bg: '/assets/sod.webp' },
   { id: 'artificial-grass-installation-turf', label: 'Artificial Grass & Turf', icon: '🌿', serviceId: 'artificial-grass-installation-turf', bg: '/assets/artificial-grass-installation-turf.webp' },
-  { id: 'sod', label: 'Sod Installation', icon: '🌲', serviceId: 'sod', bg: '/assets/sod.webp' },
+  { id: 'basement-renovation', label: 'Basement Renovation', icon: '🏠', serviceId: 'basement-renovation', bg: '/assets/basement-renovations.webp' },
+  { id: 'bobcat-service', label: 'Bobcat Service', icon: '🚜', serviceId: 'bobcat-service', bg: '/assets/bobcat-service.webp' },
   { id: 'decking', label: 'Decking', icon: '🏗️', serviceId: 'decking', bg: '/assets/decking.webp' },
   { id: 'deck-building-services', label: 'Deck Building', icon: '🪵', serviceId: 'deck-building-services', bg: '/assets/deck-building-services.webp' },
   { id: 'fencing-services', label: 'Fencing Services', icon: '🔧', serviceId: 'fencing-services', bg: '/assets/fencing-services.webp' },
-  { id: 'patios', label: "Patio's", icon: '🪨', serviceId: 'patios', bg: '/assets/patios.webp' },
-  { id: 'retaining-walls', label: 'Retaining Walls', icon: '⛏️', serviceId: 'retaining-walls', bg: '/assets/retaining-walls.webp' },
+  { id: 'flower-bed', label: 'Flower Bed', icon: '🌸', serviceId: 'flower-bed', bg: '/assets/flower-bed.webp' },
+  { id: 'framing-service', label: 'Framing Service', icon: '🔨', serviceId: 'framing-service', bg: '/assets/framing-service.webp' },
+  { id: 'garage', label: 'Garage Construction', icon: '🚗', serviceId: 'garage', bg: '/assets/Garage.webp' },
+  { id: 'gate-building', label: 'Gate Building', icon: '🚪', serviceId: 'gate-building', bg: '/assets/gate-building.webp' },
+  { id: 'gazebo', label: 'Gazebo', icon: '⛺', serviceId: 'gazebo', bg: '/assets/gazebo.webp' },
+  { id: 'kitchen-service', label: 'Kitchen Service', icon: '🍳', serviceId: 'kitchen-service', bg: '/assets/kitchen-service.webp' },
   { id: 'lot-gardening', label: 'Lot Gardening', icon: '🌳', serviceId: 'lot-gardening', bg: '/assets/lot-gardening.webp' },
-  { id: 'basement-renovation', label: 'Basement Renovation', icon: '🏠', serviceId: 'basement-renovation', bg: '/assets/basement-renovation-home.webp' },
+  { id: 'new-basement-construction', label: 'New Basement Construction', icon: '🧱', serviceId: 'new-basement-construction', bg: '/assets/new-basement-construction.webp' },
+  { id: 'painting-service', label: 'Painting Service', icon: '🎨', serviceId: 'painting-service', bg: '/assets/painting-service.webp' },
+  { id: 'patios', label: 'Patios', icon: '🪨', serviceId: 'patios', bg: '/assets/patios.webp' },
+  { id: 'pergola-services', label: 'Pergola Services', icon: '⛩️', serviceId: 'pergola-services', bg: '/assets/pergola-services.webp' },
+  { id: 'railing', label: 'Railing', icon: '🪜', serviceId: 'railing', bg: '/assets/railing.webp' },
+  { id: 'retaining-walls', label: 'Retaining Walls', icon: '⛏️', serviceId: 'retaining-walls', bg: '/assets/retaining-walls.webp' },
+  { id: 'rock', label: 'Rock Landscaping', icon: '⛰️', serviceId: 'rock', bg: '/assets/rock.webp' },
+  { id: 'sod', label: 'Sod Installation', icon: '🌲', serviceId: 'sod', bg: '/assets/sod.webp' },
+  { id: 'trees', label: 'Trees & Planting', icon: '🌲', serviceId: 'trees', bg: '/assets/trees.webp' }
 ]
 
 function getAllPhotos() {
@@ -53,7 +66,7 @@ export default function GalleryPage() {
     return () => window.removeEventListener('keydown', handle)
   }, [lightboxSrc])
 
-  const activeCategory = CATEGORIES.find(c => c.id === activeTab)
+  const activeCategory = CATEGORIES.find(c => c.id === activeTab) || CATEGORIES[0]
 
   const rawPhotos = activeTab === 'all'
     ? getAllPhotos()
