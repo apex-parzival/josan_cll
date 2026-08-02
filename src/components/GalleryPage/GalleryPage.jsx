@@ -2,31 +2,32 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './GalleryPage.css'
 import serviceGalleryMap from '../../service_galleries_map.json'
+import { ServiceIcon } from '../Services/ServiceIcons'
 
 const CATEGORIES = [
-  { id: 'all', label: 'All Photos', icon: '🖼️', serviceId: null, bg: '/assets/sod.webp' },
-  { id: 'artificial-grass-installation-turf', label: 'Artificial Grass & Turf', icon: '🌿', serviceId: 'artificial-grass-installation-turf', bg: '/assets/artificial-grass-installation-turf.webp' },
-  { id: 'basement-renovation', label: 'Basement Renovation', icon: '🏠', serviceId: 'basement-renovation', bg: '/assets/basement-renovations.webp' },
-  { id: 'bobcat-service', label: 'Bobcat Service', icon: '🚜', serviceId: 'bobcat-service', bg: '/assets/bobcat-service.webp' },
-  { id: 'decking', label: 'Decking', icon: '🏗️', serviceId: 'decking', bg: '/assets/decking.webp' },
-  { id: 'deck-building-services', label: 'Deck Building', icon: '🪵', serviceId: 'deck-building-services', bg: '/assets/deck-building-services.webp' },
-  { id: 'fencing-services', label: 'Fencing Services', icon: '🔧', serviceId: 'fencing-services', bg: '/assets/fencing-services.webp' },
-  { id: 'flower-bed', label: 'Flower Bed', icon: '🌸', serviceId: 'flower-bed', bg: '/assets/flower-bed.webp' },
-  { id: 'framing-service', label: 'Framing Service', icon: '🔨', serviceId: 'framing-service', bg: '/assets/framing-service.webp' },
-  { id: 'garage', label: 'Garage Construction', icon: '🚗', serviceId: 'garage', bg: '/assets/Garage.webp' },
-  { id: 'gate-building', label: 'Gate Building', icon: '🚪', serviceId: 'gate-building', bg: '/assets/gate-building.webp' },
-  { id: 'gazebo', label: 'Gazebo', icon: '⛺', serviceId: 'gazebo', bg: '/assets/gazebo.webp' },
-  { id: 'kitchen-service', label: 'Kitchen Service', icon: '🍳', serviceId: 'kitchen-service', bg: '/assets/kitchen-service.webp' },
-  { id: 'lot-gardening', label: 'Lot Gardening', icon: '🌳', serviceId: 'lot-gardening', bg: '/assets/lot-gardening.webp' },
-  { id: 'new-basement-construction', label: 'New Basement Construction', icon: '🧱', serviceId: 'new-basement-construction', bg: '/assets/new-basement-construction.webp' },
-  { id: 'painting-service', label: 'Painting Service', icon: '🎨', serviceId: 'painting-service', bg: '/assets/painting-service.webp' },
-  { id: 'patios', label: 'Patios', icon: '🪨', serviceId: 'patios', bg: '/assets/patios.webp' },
-  { id: 'pergola-services', label: 'Pergola Services', icon: '⛩️', serviceId: 'pergola-services', bg: '/assets/pergola-services.webp' },
-  { id: 'railing', label: 'Railing', icon: '🪜', serviceId: 'railing', bg: '/assets/railing.webp' },
-  { id: 'retaining-walls', label: 'Retaining Walls', icon: '⛏️', serviceId: 'retaining-walls', bg: '/assets/retaining-walls.webp' },
-  { id: 'rock', label: 'Rock Landscaping', icon: '⛰️', serviceId: 'rock', bg: '/assets/rock.webp' },
-  { id: 'sod', label: 'Sod Installation', icon: '🌲', serviceId: 'sod', bg: '/assets/sod.webp' },
-  { id: 'trees', label: 'Trees & Planting', icon: '🌲', serviceId: 'trees', bg: '/assets/trees.webp' }
+  { id: 'all', label: 'All Photos', serviceId: null, bg: '/assets/sod.webp' },
+  { id: 'artificial-grass-installation-turf', label: 'Artificial Grass & Turf', serviceId: 'artificial-grass-installation-turf', bg: '/assets/artificial-grass-installation-turf.webp' },
+  { id: 'basement-renovation', label: 'Basement Renovation', serviceId: 'basement-renovation', bg: '/assets/basement-renovations.webp' },
+  { id: 'bobcat-service', label: 'Bobcat Service', serviceId: 'bobcat-service', bg: '/assets/bobcat-service.webp' },
+  { id: 'decking', label: 'Decking', serviceId: 'decking', bg: '/assets/decking.webp' },
+  { id: 'deck-building-services', label: 'Deck Building', serviceId: 'deck-building-services', bg: '/assets/deck-building-services.webp' },
+  { id: 'fencing-services', label: 'Fencing Services', serviceId: 'fencing-services', bg: '/assets/fencing-services.webp' },
+  { id: 'flower-bed', label: 'Flower Bed', serviceId: 'flower-bed', bg: '/assets/flower-bed.webp' },
+  { id: 'framing-service', label: 'Framing Service', serviceId: 'framing-service', bg: '/assets/framing-service.webp' },
+  { id: 'garage', label: 'Garage Construction', serviceId: 'garage', bg: '/assets/Garage.webp' },
+  { id: 'gate-building', label: 'Gate Building', serviceId: 'gate-building', bg: '/assets/gate-building.webp' },
+  { id: 'gazebo', label: 'Gazebo', serviceId: 'gazebo', bg: '/assets/gazebo.webp' },
+  { id: 'kitchen-service', label: 'Kitchen Service', serviceId: 'kitchen-service', bg: '/assets/kitchen-service.webp' },
+  { id: 'lot-gardening', label: 'Lot Gardening', serviceId: 'lot-gardening', bg: '/assets/lot-gardening.webp' },
+  { id: 'new-basement-construction', label: 'New Basement Construction', serviceId: 'new-basement-construction', bg: '/assets/new-basement-construction.webp' },
+  { id: 'painting-service', label: 'Painting Service', serviceId: 'painting-service', bg: '/assets/painting-service.webp' },
+  { id: 'patios', label: 'Patios', serviceId: 'patios', bg: '/assets/patios.webp' },
+  { id: 'pergola-services', label: 'Pergola Services', serviceId: 'pergola-services', bg: '/assets/pergola-services.webp' },
+  { id: 'railing', label: 'Railing', serviceId: 'railing', bg: '/assets/railing.webp' },
+  { id: 'retaining-walls', label: 'Retaining Walls', serviceId: 'retaining-walls', bg: '/assets/retaining-walls.webp' },
+  { id: 'rock', label: 'Rock Landscaping', serviceId: 'rock', bg: '/assets/rock.webp' },
+  { id: 'sod', label: 'Sod Installation', serviceId: 'sod', bg: '/assets/sod.webp' },
+  { id: 'trees', label: 'Trees & Planting', serviceId: 'trees', bg: '/assets/trees.webp' }
 ]
 
 function getAllPhotos() {
@@ -134,7 +135,9 @@ export default function GalleryPage() {
                 >
                   <div className="category-card-overlay" />
                   <div className="category-card-content">
-                    <span className="category-card-icon">{cat.icon}</span>
+                    <span className="category-card-icon">
+                      <ServiceIcon name={cat.id} size={36} />
+                    </span>
                     <h3 className="category-card-title">{cat.label}</h3>
                     <span className="category-card-count">{count} Photos</span>
                   </div>
@@ -149,13 +152,16 @@ export default function GalleryPage() {
       <div className="gallery-content-area">
         <div className="container">
           <div className="gallery-content-header">
-            <div>
-              <h2 className="gallery-content-title">
-                {activeCategory.icon} {activeCategory.label}
-              </h2>
-              <p className="gallery-content-sub">
-                {photos.length} photo{photos.length !== 1 ? 's' : ''} in this category
-              </p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+              <ServiceIcon name={activeCategory.id} size={42} />
+              <div>
+                <h2 className="gallery-content-title" style={{ margin: 0 }}>
+                  {activeCategory.label}
+                </h2>
+                <p className="gallery-content-sub" style={{ margin: 0 }}>
+                  {photos.length} photo{photos.length !== 1 ? 's' : ''} in this category
+                </p>
+              </div>
             </div>
             {activeCategory.serviceId && (
               <button

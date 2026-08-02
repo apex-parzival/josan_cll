@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './Services.css'
+import { ServiceIcon } from './ServiceIcons'
 
 const CARD_PAGE_MAP = {
   'Artificial Grass & Turf': 'artificial-grass-installation-turf',
@@ -18,18 +19,18 @@ const CARD_PAGE_MAP = {
 }
 
 const SERVICE_ITEMS = [
-  { icon: '🌿', title: 'Artificial Grass & Turf', desc: 'Low-maintenance, year-round green with premium artificial turf installation.' },
-  { icon: '🏗️', title: 'Deck Building', desc: 'Custom-built decks designed for durability, beauty, and your lifestyle.' },
-  { icon: '🪨', title: 'Patios', desc: 'Elegant patio designs in stone, concrete, or pavers — perfect for outdoor living.' },
-  { icon: '🔧', title: 'Fencing Services', desc: 'Privacy, security, and style with our wide range of fencing solutions.' },
-  { icon: '🏠', title: 'Basement Renovations', desc: 'Transform your basement into a functional, beautiful living space.' },
-  { icon: '🌲', title: 'Sod Installation', desc: 'Instant lush lawns with professional sod laying and aftercare guidance.' },
-  { icon: '⛏️', title: 'Retaining Walls', desc: 'Structural and decorative retaining walls built to last for decades.' },
-  { icon: '🌴', title: 'Pergola', desc: 'Beautiful custom pergolas designed for shade, style, and outdoor comfort.' },
-  { icon: '🚜', title: 'Bobcat Service', desc: 'Heavy equipment work for excavation, grading, and land preparation.' },
-  { icon: '🌳', title: 'Trees & Lot Gardening', desc: 'Tree planting, removal, and full lot gardening services for any property size.' },
-  { icon: '🪟', title: 'Railing & Gates', desc: 'Custom railings and gates that combine safety with stunning aesthetics.' },
-  { icon: '🎨', title: 'Painting Service', desc: 'Interior and exterior painting with premium materials and flawless finish.' }
+  { id: 'artificial-grass-installation-turf', title: 'Artificial Grass & Turf', desc: 'Low-maintenance, year-round green with premium artificial turf installation.' },
+  { id: 'deck-building-services', title: 'Deck Building', desc: 'Custom-built decks designed for durability, beauty, and your lifestyle.' },
+  { id: 'patios', title: 'Patios', desc: 'Elegant patio designs in stone, concrete, or pavers — perfect for outdoor living.' },
+  { id: 'fencing-services', title: 'Fencing Services', desc: 'Privacy, security, and style with our wide range of fencing solutions.' },
+  { id: 'basement-renovations', title: 'Basement Renovations', desc: 'Transform your basement into a functional, beautiful living space.' },
+  { id: 'sod', title: 'Sod Installation', desc: 'Instant lush lawns with professional sod laying and aftercare guidance.' },
+  { id: 'retaining-walls', title: 'Retaining Walls', desc: 'Structural and decorative retaining walls built to last for decades.' },
+  { id: 'pergola-services', title: 'Pergola', desc: 'Beautiful custom pergolas designed for shade, style, and outdoor comfort.' },
+  { id: 'bobcat-service', title: 'Bobcat Service', desc: 'Heavy equipment work for excavation, grading, and land preparation.' },
+  { id: 'trees', title: 'Trees & Lot Gardening', desc: 'Tree planting, removal, and full lot gardening services for any property size.' },
+  { id: 'railing', title: 'Railing & Gates', desc: 'Custom railings and gates that combine safety with stunning aesthetics.' },
+  { id: 'painting-service', title: 'Painting Service', desc: 'Interior and exterior painting with premium materials and flawless finish.' }
 ]
 
 export default function Services() {
@@ -62,7 +63,9 @@ export default function Services() {
         <div className="services-grid">
           {visibleItems.map((s, idx) => (
             <div key={idx} className={`service-card reveal up d${(idx % 3) + 1}`}>
-              <span className="service-icon" role="img" aria-label={s.title}>{s.icon}</span>
+              <div className="service-icon-wrapper" style={{ marginBottom: '16px' }}>
+                <ServiceIcon name={s.id} size={48} />
+              </div>
               <h3>{s.title}</h3>
               <p>{s.desc}</p>
               <button className="service-btn" onClick={() => handleCardClick(s.title)}>
