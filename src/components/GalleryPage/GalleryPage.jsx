@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './GalleryPage.css'
-import serviceGalleryMap from '../../service_galleries_map.json'
+import defaultServiceGalleryMap from '../../service_galleries_map.json'
 import { ServiceIcon } from '../Services/ServiceIcons'
 
 const CATEGORIES = [
@@ -30,16 +30,7 @@ const CATEGORIES = [
   { id: 'trees', label: 'Trees & Planting', serviceId: 'trees', bg: '/assets/trees.webp' }
 ]
 
-function getAllPhotos() {
-  const seen = new Set()
-  const all = []
-  Object.values(serviceGalleryMap).forEach(photos => {
-    photos.forEach(p => {
-      if (!seen.has(p)) { seen.add(p); all.push(p) }
-    })
-  })
-  return all
-}
+const SERVICE_TARGET_CATEGORIES = CATEGORIES.filter(c => c.id !== 'all')
 
 export default function GalleryPage() {
   const navigate = useNavigate()
@@ -47,6 +38,29 @@ export default function GalleryPage() {
   const [lightboxSrc, setLightboxSrc] = useState(null)
   const [visibleCount, setVisibleCount] = useState(24)
   const [failedPhotos, setFailedPhotos] = useState([])
+  
+  // Custom interactive gallery map state
+  const [galleryMap, setGalleryMap] = useState(() => {
+    try {
+      const saved = localStorage.getItem('custom_gallery_map')
+      return saved ? JSON.parse(saved) : defaultServiceGalleryMap
+    } catch {
+      return defaultServiceGalleryMap
+    }
+  })
+
+  const [organizerMode, setOrganizerMode] = useState(true)
+  const [activeMenuPhoto, setActiveMenuPhoto] = useState(null)
+  const [toastMsg, setToastMsg] = useState(null)
+
+  // Save to localStorage whenever map changes
+  useEffect(() => {
+    try {
+      localStorage.setItem('custom_gallery_map', JSON.stringify(galleryMap))
+    } catch (e) {
+      console.error('Failed to save to localStorage', e)
+    }
+  }, [galleryMap])
 
   // Scroll to top on mount
   useEffect(() => {
@@ -57,21 +71,90 @@ export default function GalleryPage() {
   useEffect(() => {
     setVisibleCount(24)
     setFailedPhotos([])
+    setActiveMenuPhoto(null)
   }, [activeTab])
 
-  // Escape key closes lightbox
+  // Close menus on click outside
   useEffect(() => {
-    if (!lightboxSrc) return
-    const handle = e => { if (e.key === 'Escape') setLightboxSrc(null) }
-    window.addEventListener('keydown', handle)
-    return () => window.removeEventListener('keydown', handle)
-  }, [lightboxSrc])
+    const handleWindowClick = () => setActiveMenuPhoto(null)
+    window.addEventListener('click', handleWindowClick)
+    return () => window.removeEventListener('click', handleWindowClick)
+  }, [])
+
+  function showToast(msg) {
+    setToastMsg(msg)
+    setTimeout(() => setToastMsg(null), 3500)
+  }
+
+  function getAllPhotos() {
+    const seen = new Set()
+    const all = []
+    Object.values(galleryMap).forEach(photos => {
+      if (Array.isArray(photos)) {
+        photos.forEach(p => {
+          if (!seen.has(p)) { seen.add(p); all.push(p) }
+        })
+      }
+    })
+    return all
+  }
+
+  function movePhotoToCategory(photoPath, targetCategoryId) {
+    setGalleryMap(prevMap => {
+      const newMap = { ...prevMap }
+
+      // 1. Remove photo from ALL existing categories
+      Object.keys(newMap).forEach(catKey => {
+        if (Array.isArray(newMap[catKey])) {
+          newMap[catKey] = newMap[catKey].filter(p => p !== photoPath)
+        }
+      })
+
+      // 2. Add photo ONLY to the target category
+      if (!newMap[targetCategoryId]) {
+        newMap[targetCategoryId] = []
+      }
+      if (!newMap[targetCategoryId].includes(photoPath)) {
+        newMap[targetCategoryId].push(photoPath)
+      }
+
+      return newMap
+    })
+
+    const targetLabel = CATEGORIES.find(c => c.id === targetCategoryId)?.label || targetCategoryId
+    showToast(`Photo moved to "${targetLabel}"`)
+    setActiveMenuPhoto(null)
+  }
+
+  function exportJSON() {
+    const jsonStr = JSON.stringify(galleryMap, null, 2)
+    navigator.clipboard.writeText(jsonStr)
+    
+    // Also trigger file download
+    const blob = new Blob([jsonStr], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'service_galleries_map.json'
+    a.click()
+    URL.revokeObjectURL(url)
+
+    showToast("Downloaded service_galleries_map.json & copied to clipboard!")
+  }
+
+  function resetToDefault() {
+    if (window.confirm("Reset all photo categories back to original default?")) {
+      setGalleryMap(defaultServiceGalleryMap)
+      localStorage.removeItem('custom_gallery_map')
+      showToast("Reset to default category mappings.")
+    }
+  }
 
   const activeCategory = CATEGORIES.find(c => c.id === activeTab) || CATEGORIES[0]
 
   const rawPhotos = activeTab === 'all'
     ? getAllPhotos()
-    : (serviceGalleryMap[activeTab] || [])
+    : (galleryMap[activeTab] || [])
 
   const photos = rawPhotos.filter(p => !failedPhotos.includes(p))
   const visiblePhotos = photos.slice(0, visibleCount)
@@ -79,11 +162,25 @@ export default function GalleryPage() {
 
   function getCategoryCount(catId) {
     if (catId === 'all') return getAllPhotos().length
-    return (serviceGalleryMap[catId] || []).length
+    return (galleryMap[catId] || []).length
+  }
+
+  // Find current category for a photo
+  function getPhotoCurrentCategory(photoPath) {
+    for (const [catKey, photoList] of Object.entries(galleryMap)) {
+      if (Array.isArray(photoList) && photoList.includes(photoPath)) {
+        const cat = CATEGORIES.find(c => c.id === catKey)
+        return cat ? cat.label : catKey
+      }
+    }
+    return 'Uncategorized'
   }
 
   return (
     <div className="gallery-page">
+      {/* Toast Notification */}
+      {toastMsg && <div className="gallery-toast">{toastMsg}</div>}
+
       {/* Hero Banner */}
       <header className="gallery-page-hero">
         <div className="gallery-hero-overlay" />
@@ -114,6 +211,37 @@ export default function GalleryPage() {
           </div>
         </div>
       </header>
+
+      {/* Photo Organizer Admin Control Bar */}
+      <div className="organizer-toolbar">
+        <div className="container organizer-toolbar-inner">
+          <div className="organizer-toolbar-left">
+            <label className="organizer-toggle-lbl">
+              <input
+                type="checkbox"
+                checked={organizerMode}
+                onChange={e => setOrganizerMode(e.target.checked)}
+              />
+              <span className="organizer-toggle-btn" />
+              <strong>⚡ Photo Organizer Mode ({organizerMode ? 'ENABLED' : 'DISABLED'})</strong>
+            </label>
+            <span className="organizer-hint">
+              {organizerMode ? 'Click the ⋮ menu on any photo to move it into its exact service category.' : 'Turn on to re-arrange & segregate photos.'}
+            </span>
+          </div>
+
+          {organizerMode && (
+            <div className="organizer-toolbar-right">
+              <button className="btn-org btn-org-export" onClick={exportJSON}>
+                📥 Save & Export JSON
+              </button>
+              <button className="btn-org btn-org-reset" onClick={resetToDefault}>
+                🔄 Reset
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Category Filter Cards */}
       <div className="gallery-categories-section">
@@ -188,23 +316,76 @@ export default function GalleryPage() {
           ) : (
             <>
               <div className="gallery-photo-grid">
-                {visiblePhotos.map((photo, idx) => (
-                  <div
-                    key={idx}
-                    className="gallery-photo-item"
-                    onClick={() => setLightboxSrc(photo)}
-                  >
-                    <img
-                      src={photo}
-                      alt={`${activeCategory.label} project photo ${idx + 1}`}
-                      loading="lazy"
-                      onError={() => setFailedPhotos(prev => [...prev, photo])}
-                    />
-                    <div className="gallery-photo-overlay">
-                      <span className="gallery-photo-zoom">🔍 View Full</span>
+                {visiblePhotos.map((photo, idx) => {
+                  const isMenuOpen = activeMenuPhoto === photo
+                  const currentCatLabel = getPhotoCurrentCategory(photo)
+
+                  return (
+                    <div
+                      key={idx}
+                      className="gallery-photo-item"
+                      onClick={() => setLightboxSrc(photo)}
+                    >
+                      <img
+                        src={photo}
+                        alt={`${activeCategory.label} project photo ${idx + 1}`}
+                        loading="lazy"
+                        onError={() => setFailedPhotos(prev => [...prev, photo])}
+                      />
+
+                      {/* Organizer Badge / Category tag */}
+                      {organizerMode && (
+                        <div className="photo-cat-tag">
+                          📁 {currentCatLabel}
+                        </div>
+                      )}
+
+                      {/* Three-Dot Menu Button */}
+                      {organizerMode && (
+                        <div
+                          className="photo-menu-btn"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setActiveMenuPhoto(isMenuOpen ? null : photo)
+                          }}
+                          title="Move Photo to Category"
+                        >
+                          ⋮
+                        </div>
+                      )}
+
+                      {/* Three-Dot Dropdown Menu */}
+                      {organizerMode && isMenuOpen && (
+                        <div
+                          className="photo-move-menu"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <div className="move-menu-header">
+                            <span>Move Photo to Folder:</span>
+                            <button className="move-menu-close" onClick={() => setActiveMenuPhoto(null)}>✕</button>
+                          </div>
+                          <div className="move-menu-list">
+                            {SERVICE_TARGET_CATEGORIES.map(targetCat => (
+                              <button
+                                key={targetCat.id}
+                                className={`move-menu-item${galleryMap[targetCat.id]?.includes(photo) ? ' selected' : ''}`}
+                                onClick={() => movePhotoToCategory(photo, targetCat.id)}
+                              >
+                                <ServiceIcon name={targetCat.id} size={20} />
+                                <span>{targetCat.label}</span>
+                                {galleryMap[targetCat.id]?.includes(photo) && <span className="move-check">✓</span>}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="gallery-photo-overlay">
+                        <span className="gallery-photo-zoom">🔍 View Full</span>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
 
               {hasMore && (
