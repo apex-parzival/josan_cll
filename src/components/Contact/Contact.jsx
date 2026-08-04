@@ -13,6 +13,8 @@ export default function Contact() {
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [imageFile, setImageFile] = useState(null)
+  const [imageError, setImageError] = useState('')
 
   function validateField(name, val) {
     let err = ''
@@ -44,6 +46,53 @@ export default function Contact() {
     validateField(name, value)
   }
 
+  function handleFileChange(e) {
+    const file = e.target.files[0]
+    setImageError('')
+    
+    if (!file) {
+      return
+    }
+
+    // Validate size (3MB = 3 * 1024 * 1024 bytes)
+    if (file.size > 3 * 1024 * 1024) {
+      setImageError('File size exceeds the 3MB limit. Please upload a smaller image.')
+      setImageFile(null)
+      e.target.value = '' // Clear input
+      return
+    }
+
+    // Validate type
+    if (!file.type.startsWith('image/')) {
+      setImageError('Only image files (PNG, JPG, JPEG, WEBP) are supported.')
+      setImageFile(null)
+      e.target.value = '' // Clear input
+      return
+    }
+
+    setImageFile(file)
+  }
+
+  function handleRemoveFile() {
+    setImageFile(null)
+    setImageError('')
+    const input = document.getElementById('image')
+    if (input) input.value = '' // Clear input element
+  }
+
+  function convertToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => {
+        // Extract base64 part from the data URL
+        const base64 = reader.result.split(',')[1]
+        resolve(base64)
+      }
+      reader.onerror = error => reject(error)
+    })
+  }
+
   async function handleSubmit(e) {
     e.preventDefault()
 
@@ -51,17 +100,33 @@ export default function Contact() {
     const emailVal = validateField('email', form.email)
     const msgVal = validateField('message', form.message)
 
-    if (!nameVal || !emailVal || !msgVal) return
+    if (!nameVal || !emailVal || !msgVal || imageError) return
 
     setLoading(true)
     
+    let imageContent = null
+    let imageName = ''
+    if (imageFile) {
+      try {
+        imageContent = await convertToBase64(imageFile)
+        imageName = imageFile.name
+      } catch (err) {
+        console.error('Failed to convert image to base64:', err)
+      }
+    }
+
     // Send email to info@josancll.ca via Resend API
-    await sendEnquiryEmail(form)
+    await sendEnquiryEmail({ ...form, imageContent, imageName })
 
     setLoading(false)
     setSuccess(true)
     setForm({ name: '', email: '', phone: '', service: '', message: '' })
+    setImageFile(null)
+    setImageError('')
     setErrors({})
+
+    const input = document.getElementById('image')
+    if (input) input.value = '' // Clear file input
 
     setTimeout(() => setSuccess(false), 8000)
   }
@@ -235,6 +300,80 @@ export default function Contact() {
                   required
                 />
                 {errors.message && <span className="field-error visible">{errors.message}</span>}
+              </div>
+
+              <div className="form-group">
+                <label>Attach Project Photo (Optional)</label>
+                <div className="file-upload-wrapper" style={{
+                  position: 'relative',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '8px'
+                }}>
+                  <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    accept="image/png, image/jpeg, image/jpg, image/webp"
+                    onChange={handleFileChange}
+                    style={{ display: 'none' }}
+                  />
+                  <label htmlFor="image" style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    padding: '12px 20px',
+                    background: '#ffffff',
+                    border: '1.5px dashed var(--gray-3)',
+                    borderRadius: 'var(--r-sm)',
+                    cursor: 'pointer',
+                    color: 'var(--gray-7)',
+                    fontSize: '0.9rem',
+                    fontWeight: '600',
+                    transition: 'border-color 0.25s',
+                    textTransform: 'none',
+                    letterSpacing: 'normal'
+                  }}
+                  onMouseEnter={(e) => e.target.style.borderColor = 'var(--g500)'}
+                  onMouseLeave={(e) => e.target.style.borderColor = 'var(--gray-3)'}
+                  >
+                    📷 {imageFile ? 'Change Photo' : 'Upload Project Photo (Max 3MB)'}
+                  </label>
+                  {imageFile && (
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '8px 12px',
+                      background: '#eef6f0',
+                      borderRadius: 'var(--r-sm)',
+                      fontSize: '0.85rem',
+                      color: 'var(--g700)',
+                      border: '1px solid #d4ecd8'
+                    }}>
+                      <span style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', maxWidth: '80%' }}>
+                        📎 {imageFile.name} ({(imageFile.size / 1024 / 1024).toFixed(2)} MB)
+                      </span>
+                      <button
+                        type="button"
+                        onClick={handleRemoveFile}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          color: '#dc3545',
+                          cursor: 'pointer',
+                          fontWeight: '600',
+                          fontSize: '0.85rem',
+                          padding: '2px 6px'
+                        }}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  )}
+                  {imageError && <span className="field-error visible" style={{ marginTop: '2px' }}>{imageError}</span>}
+                </div>
               </div>
 
               <button

@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { name, email, phone, service, message } = req.body;
+  const { name, email, phone, service, message, imageContent, imageName } = req.body;
   const RESEND_API_KEY = process.env.VITE_RESEND_API_KEY || process.env.RESEND_API_KEY;
 
   if (!RESEND_API_KEY) {
@@ -55,6 +55,12 @@ export default async function handler(req, res) {
         <p style="margin: 0; white-space: pre-wrap; line-height: 1.6;">${message}</p>
       </div>
 
+      ${imageContent ? `
+      <div style="margin-top: 15px; padding: 10px; background: #eef6f0; border: 1px solid #d4ecd8; border-radius: 4px; font-size: 0.9em; color: #2d6a4f;">
+        📎 <strong>Attachment:</strong> A project photo has been uploaded and attached to this email.
+      </div>
+      ` : ''}
+
       <p style="margin-top: 25px; font-size: 0.85em; color: #666; border-top: 1px solid #eee; padding-top: 10px;">
         Sent automatically from <a href="https://josancll.ca">Josan Construction Web Portal</a>
       </p>
@@ -62,19 +68,30 @@ export default async function handler(req, res) {
   `;
 
   try {
+    const payload = {
+      from: 'Josan Website <onboarding@resend.dev>', // Keep onboarding@resend.dev or change to your verified domain sender e.g. info@josancll.ca / quotes@josancll.ca
+      to: ['info@josancll.ca'],
+      reply_to: email,
+      subject: `New Quote Request: ${service || 'General Enquiry'} — ${name}`,
+      html: htmlContent
+    };
+
+    if (imageContent && imageName) {
+      payload.attachments = [
+        {
+          content: imageContent,
+          filename: imageName
+        }
+      ];
+    }
+
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${RESEND_API_KEY}`
       },
-      body: JSON.stringify({
-        from: 'Josan Website <onboarding@resend.dev>', // Keep onboarding@resend.dev or change to your verified domain sender e.g. info@josancll.ca / quotes@josancll.ca
-        to: ['info@josancll.ca'],
-        reply_to: email,
-        subject: `New Quote Request: ${service || 'General Enquiry'} — ${name}`,
-        html: htmlContent
-      })
+      body: JSON.stringify(payload)
     });
 
     const data = await response.json();

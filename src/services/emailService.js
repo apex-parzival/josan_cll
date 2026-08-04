@@ -3,7 +3,7 @@
  * Automatically sends emails in the background without opening external mail applications.
  */
 
-export async function sendEnquiryEmail({ name, email, phone, service, message }) {
+export async function sendEnquiryEmail({ name, email, phone, service, message, imageContent, imageName }) {
   const RECIPIENT_EMAIL = 'info@josancll.ca'
 
   // 1. Try sending via Vercel Serverless Function (Resend API)
@@ -13,7 +13,7 @@ export async function sendEnquiryEmail({ name, email, phone, service, message })
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ name, email, phone, service, message })
+      body: JSON.stringify({ name, email, phone, service, message, imageContent, imageName })
     })
 
     if (response.ok) {
