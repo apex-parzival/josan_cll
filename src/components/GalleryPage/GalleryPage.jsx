@@ -205,7 +205,7 @@ export default function GalleryPage() {
             </div>
             <div className="hero-stat-divider" />
             <div className="hero-stat">
-              <span className="hero-stat-number">15+</span>
+              <span className="hero-stat-number">8+</span>
               <span className="hero-stat-label">Years Experience</span>
             </div>
           </div>

@@ -1,15 +1,9 @@
 import { useRef, useState } from 'react'
 import './Contact.css'
 import { sendEnquiryEmail, emailDomainAcceptsMail } from '../../services/emailService'
+import { isEmailFormat, toTenDigitPhone, imageFileError, fileToBase64 } from '../../services/formUtils'
 
 const EMAIL_DOMAIN_ERROR = "This email domain doesn't exist. Please check for typos (e.g. gmail.com, outlook.com)."
-
-// Keep digits only; drop a leading +1 country code so a pasted "+1 (403) 123-4567" still fits
-function toTenDigitPhone(value) {
-  let digits = value.replace(/\D/g, '')
-  if (digits.length === 11 && digits.startsWith('1')) digits = digits.slice(1)
-  return digits.slice(0, 10)
-}
 
 export default function Contact() {
   const [form, setForm] = useState({
@@ -33,7 +27,7 @@ export default function Contact() {
     } else if (name === 'email') {
       if (!val.trim()) {
         err = 'Email Address is required.'
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+      } else if (!isEmailFormat(val)) {
         err = 'Please enter a valid email address.'
       }
     } else if (name === 'phone' && val && val.length !== 10) {
@@ -79,17 +73,9 @@ export default function Contact() {
       return
     }
 
-    // Validate size (3MB = 3 * 1024 * 1024 bytes)
-    if (file.size > 3 * 1024 * 1024) {
-      setImageError('File size exceeds the 3MB limit. Please upload a smaller image.')
-      setImageFile(null)
-      e.target.value = '' // Clear input
-      return
-    }
-
-    // Validate type
-    if (!file.type.startsWith('image/')) {
-      setImageError('Only image files (PNG, JPG, JPEG, WEBP) are supported.')
+    const err = imageFileError(file)
+    if (err) {
+      setImageError(err)
       setImageFile(null)
       e.target.value = '' // Clear input
       return
@@ -103,19 +89,6 @@ export default function Contact() {
     setImageError('')
     const input = document.getElementById('image')
     if (input) input.value = '' // Clear input element
-  }
-
-  function convertToBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.readAsDataURL(file)
-      reader.onload = () => {
-        // Extract base64 part from the data URL
-        const base64 = reader.result.split(',')[1]
-        resolve(base64)
-      }
-      reader.onerror = error => reject(error)
-    })
   }
 
   async function handleSubmit(e) {
@@ -139,7 +112,7 @@ export default function Contact() {
     let imageName = ''
     if (imageFile) {
       try {
-        imageContent = await convertToBase64(imageFile)
+        imageContent = await fileToBase64(imageFile)
         imageName = imageFile.name
       } catch (err) {
         console.error('Failed to convert image to base64:', err)

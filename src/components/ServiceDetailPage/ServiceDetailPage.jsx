@@ -212,7 +212,7 @@ export default function ServiceDetailPage() {
               <div className="sidebar-card details-sidebar">
                 <h3>Why Work With Us?</h3>
                 <ul className="sidebar-features-list">
-                  <li>✓ 15+ Years Calgary Experience</li>
+                  <li>✓ 8+ Years Calgary Experience</li>
                   <li>✓ Fully Licensed & Insured</li>
                   <li>✓ Transparent Upfront Pricing</li>
                   <li>✓ Skilled & Trusted Crew</li>

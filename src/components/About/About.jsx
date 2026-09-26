@@ -24,7 +24,7 @@ export default function About() {
             </div>
             <div className="about-badge-float">
               <div className="float-badge">
-                <span className="float-num">15+</span>
+                <span className="float-num">8+</span>
                 <span className="float-text">Years of<br />Experience</span>
               </div>
             </div>

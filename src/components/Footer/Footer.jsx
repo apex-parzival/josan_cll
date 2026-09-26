@@ -51,7 +51,7 @@ export default function Footer() {
               <button className="footer-logo-btn" onClick={() => scrollTo('home')} aria-label="Go to home">
                 <img src="/assets/logo.png" alt="Josan Construction & Landscaping LTD" className="logo-img" />
               </button>
-              <p>Calgary's most trusted landscaping and construction company, delivering quality craftsmanship for over 15 years.</p>
+              <p>Calgary's most trusted landscaping and construction company, delivering quality craftsmanship for over 8 years.</p>
               <div className="footer-social">
                 <a href="https://www.facebook.com/share/17AfZBYfVF/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="facebook">
                   <svg viewBox="0 0 320 512" xmlns="http://www.w3.org/2000/svg">

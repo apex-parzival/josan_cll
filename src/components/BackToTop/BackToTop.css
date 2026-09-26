@@ -1,8 +1,9 @@
 /* ── BackToTop CSS ── */
 .back-to-top {
   position: fixed;
-  bottom: 32px;
-  right: 32px;
+  /* Stacked above the chat launcher (see Chatbot.css), centred on it */
+  bottom: 100px;
+  right: 31px;
   width: 46px;
   height: 46px;
   background: var(--g600);
@@ -29,4 +30,7 @@
 .back-to-top:hover {
   background: var(--g500);
   transform: translateY(-3px);
+}
+@media (max-width: 480px) {
+  .back-to-top { bottom: 88px; right: 23px; }
 }

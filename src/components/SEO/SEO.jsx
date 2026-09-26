@@ -63,7 +63,7 @@ export default function SEO() {
 
         faqs.unshift({
           q: `Why choose Josan Construction for ${service.title} in Calgary?`,
-          a: `With over 15 years of local experience and 135+ 5-star Google reviews, Josan Construction delivers premium craftsmanship, transparent upfront pricing, clean jobsites, and guaranteed on-time completion for ${service.title.toLowerCase()} across Calgary.`
+          a: `With over 8 years of local experience and 135+ 5-star Google reviews, Josan Construction delivers premium craftsmanship, transparent upfront pricing, clean jobsites, and guaranteed on-time completion for ${service.title.toLowerCase()} across Calgary.`
         })
       }
     }

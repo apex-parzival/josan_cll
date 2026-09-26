@@ -8,9 +8,9 @@ const SLIDES = [
 ]
 
 const STATS = [
-  { target: 15,  suffix: '+', label: 'Years Experience' },
-  { target: 500, suffix: '+', label: 'Projects Done' },
-  { target: 100, suffix: '%', label: 'Satisfaction' },
+  { target: 8,   suffix: '+', label: 'Years Experience' },
+  { target: 508, suffix: '+', label: 'Projects Done' },
+  { target: 98,  suffix: '%', label: 'Satisfaction' },
 ]
 
 function useCounter(target, started) {

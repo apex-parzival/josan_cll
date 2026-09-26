@@ -14,6 +14,7 @@ import CtaBanner from './components/CtaBanner/CtaBanner'
 import Contact from './components/Contact/Contact'
 import Footer from './components/Footer/Footer'
 import BackToTop from './components/BackToTop/BackToTop'
+import Chatbot from './components/Chatbot/Chatbot'
 import ServiceDetailPage from './components/ServiceDetailPage/ServiceDetailPage'
 import GalleryPage from './components/GalleryPage/GalleryPage'
 import ReviewsPage from './components/ReviewsPage/ReviewsPage'
@@ -79,6 +80,7 @@ export default function App() {
       </main>
       <Footer />
       <BackToTop />
+      <Chatbot />
     </HashRouter>
   )
 }
