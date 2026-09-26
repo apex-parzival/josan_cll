@@ -230,17 +230,19 @@
   scroll-behavior: smooth;
   padding-bottom: 20px;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: var(--gray-3) transparent;
 }
 
 .reviews-video-track::-webkit-scrollbar {
-  height: 5px;
+  height: 10px;
 }
 
+.reviews-video-track::-webkit-scrollbar-track {
+  background: var(--gray-2);
+  border-radius: 5px;
+}
 .reviews-video-track::-webkit-scrollbar-thumb {
-  background: var(--gray-3);
-  border-radius: 4px;
+  background: var(--g500);
+  border-radius: 5px;
 }
 
 .reviews-video-card {

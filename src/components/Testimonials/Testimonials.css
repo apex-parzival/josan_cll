@@ -359,15 +359,18 @@
   scroll-behavior: smooth;
   padding-bottom: 16px;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
 }
 
 .video-testimonials-track::-webkit-scrollbar {
-  height: 6px;
+  height: 10px;
+}
+.video-testimonials-track::-webkit-scrollbar-track {
+  background: var(--gray-2);
+  border-radius: 5px;
 }
 .video-testimonials-track::-webkit-scrollbar-thumb {
-  background: var(--gray-3);
-  border-radius: 4px;
+  background: var(--g500);
+  border-radius: 5px;
 }
 
 .video-testimonial-card {

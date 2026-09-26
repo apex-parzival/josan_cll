@@ -1,6 +1,15 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import './Contact.css'
-import { sendEnquiryEmail } from '../../services/emailService'
+import { sendEnquiryEmail, emailDomainAcceptsMail } from '../../services/emailService'
+
+const EMAIL_DOMAIN_ERROR = "This email domain doesn't exist. Please check for typos (e.g. gmail.com, outlook.com)."
+
+// Keep digits only; drop a leading +1 country code so a pasted "+1 (403) 123-4567" still fits
+function toTenDigitPhone(value) {
+  let digits = value.replace(/\D/g, '')
+  if (digits.length === 11 && digits.startsWith('1')) digits = digits.slice(1)
+  return digits.slice(0, 10)
+}
 
 export default function Contact() {
   const [form, setForm] = useState({
@@ -15,6 +24,7 @@ export default function Contact() {
   const [success, setSuccess] = useState(false)
   const [imageFile, setImageFile] = useState(null)
   const [imageError, setImageError] = useState('')
+  const latestEmail = useRef('')
 
   function validateField(name, val) {
     let err = ''
@@ -26,6 +36,8 @@ export default function Contact() {
       } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
         err = 'Please enter a valid email address.'
       }
+    } else if (name === 'phone' && val && val.length !== 10) {
+      err = 'Please enter a 10-digit phone number.'
     } else if (name === 'message' && !val.trim()) {
       err = 'Message is required.'
     }
@@ -33,8 +45,19 @@ export default function Contact() {
     return !err
   }
 
+  // Async check that the email's domain can receive mail; ignores results for an email the user has since edited
+  async function validateEmailDomain(val) {
+    const ok = await emailDomainAcceptsMail(val)
+    if (!ok && latestEmail.current === val) {
+      setErrors(prev => ({ ...prev, email: EMAIL_DOMAIN_ERROR }))
+    }
+    return ok
+  }
+
   function handleChange(e) {
-    const { name, value } = e.target
+    const { name } = e.target
+    const value = name === 'phone' ? toTenDigitPhone(e.target.value) : e.target.value
+    if (name === 'email') latestEmail.current = value
     setForm(prev => ({ ...prev, [name]: value }))
     if (errors[name]) {
       validateField(name, value)
@@ -43,7 +66,9 @@ export default function Contact() {
 
   function handleBlur(e) {
     const { name, value } = e.target
-    validateField(name, value)
+    if (validateField(name, value) && name === 'email') {
+      validateEmailDomain(value)
+    }
   }
 
   function handleFileChange(e) {
@@ -98,12 +123,18 @@ export default function Contact() {
 
     const nameVal = validateField('name', form.name)
     const emailVal = validateField('email', form.email)
+    const phoneVal = validateField('phone', form.phone)
     const msgVal = validateField('message', form.message)
 
-    if (!nameVal || !emailVal || !msgVal || imageError) return
+    if (!nameVal || !emailVal || !phoneVal || !msgVal || imageError) return
 
     setLoading(true)
-    
+
+    if (!(await validateEmailDomain(form.email))) {
+      setLoading(false)
+      return
+    }
+
     let imageContent = null
     let imageName = ''
     if (imageFile) {
@@ -116,9 +147,13 @@ export default function Contact() {
     }
 
     // Send email to info@josancll.ca via Resend API
-    await sendEnquiryEmail({ ...form, imageContent, imageName })
+    const result = await sendEnquiryEmail({ ...form, imageContent, imageName })
 
     setLoading(false)
+    if (result.error === 'invalid_email_domain') {
+      setErrors(prev => ({ ...prev, email: EMAIL_DOMAIN_ERROR }))
+      return
+    }
     setSuccess(true)
     setForm({ name: '', email: '', phone: '', service: '', message: '' })
     setImageFile(null)
@@ -244,10 +279,15 @@ export default function Contact() {
                     type="tel"
                     id="phone"
                     name="phone"
-                    placeholder="+1 (403) 000-0000"
+                    inputMode="numeric"
+                    autoComplete="tel-national"
+                    placeholder="4030000000"
                     value={form.phone}
                     onChange={handleChange}
+                    onBlur={handleBlur}
+                    style={{ borderColor: errors.phone ? '#dc3545' : '' }}
                   />
+                  {errors.phone && <span className="field-error visible">{errors.phone}</span>}
                 </div>
               </div>
 

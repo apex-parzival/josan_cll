@@ -1,3 +1,16 @@
+import { promises as dns } from 'node:dns';
+
+// Reject email domains that can't receive mail (e.g. made-up domains), but don't block on resolver outages
+async function domainAcceptsMail(email) {
+  const domain = String(email || '').split('@').pop().trim().toLowerCase();
+  try {
+    const records = await dns.resolveMx(domain);
+    return records.some(r => r.exchange && r.exchange !== '.');
+  } catch (err) {
+    return !['ENOTFOUND', 'ENODATA'].includes(err.code);
+  }
+}
+
 export default async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -22,6 +35,10 @@ export default async function handler(req, res) {
 
   if (!RESEND_API_KEY) {
     return res.status(500).json({ error: 'Resend API key is not configured.' });
+  }
+
+  if (!(await domainAcceptsMail(email))) {
+    return res.status(400).json({ error: 'invalid_email_domain' });
   }
 
   const htmlContent = `
@@ -69,7 +86,7 @@ export default async function handler(req, res) {
 
   try {
     const payload = {
-      from: 'Josan Website <onboarding@resend.dev>', // Keep onboarding@resend.dev or change to your verified domain sender e.g. info@josancll.ca / quotes@josancll.ca
+      from: 'Josan Website <website@josancll.ca>', // josancll.ca is verified in Resend
       to: ['info@josancll.ca'],
       reply_to: email,
       subject: `New Quote Request: ${service || 'General Enquiry'} — ${name}`,
