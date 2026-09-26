@@ -86,7 +86,7 @@ export default async function handler(req, res) {
 
   try {
     const payload = {
-      from: 'Josan Website <website@josancll.ca>', // josancll.ca is verified in Resend
+      from: 'Josan Enquiry <website@josancll.ca>', // josancll.ca is verified in Resend
       to: ['info@josancll.ca'],
       reply_to: email,
       subject: `New Quote Request: ${service || 'General Enquiry'} — ${name}`,

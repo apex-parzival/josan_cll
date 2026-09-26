@@ -72,7 +72,7 @@ export async function sendEnquiryEmail({ name, email, phone, service, message, i
         service: service || 'General Enquiry',
         message: message,
         subject: `New Website Quote Request: ${service || 'General'} — ${name}`,
-        from_name: 'Josan Construction Web Portal',
+        from_name: 'Josan Enquiry',
         replyto: email,
         to: RECIPIENT_EMAIL
       })
