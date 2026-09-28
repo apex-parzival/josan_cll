@@ -14,7 +14,12 @@ const TEASER_KEY = 'josan-chat-teaser-seen'
 const EMAIL_DOMAIN_ERROR = "That email domain doesn't seem to exist. Please check for typos (e.g. gmail.com, outlook.com)."
 
 const MENU_BUTTON = { label: 'Main menu', action: { type: 'menu' } }
-const QUOTE_BUTTON = { label: 'Get a Quote', action: { type: 'flow', flow: 'quote' } }
+const POPULAR_QUESTIONS = [
+  'Do you offer free estimates?',
+  'What areas do you serve?',
+  'How long does a project take?'
+].map(q => ({ label: `💬 ${q}`, action: { type: 'question', text: q } }))
+const QUOTE_BUTTON ={ label: 'Get a Quote', action: { type: 'flow', flow: 'quote' } }
 const CALLBACK_BUTTON = { label: 'Request a Callback', action: { type: 'flow', flow: 'callback' } }
 const ASK_BUTTON = { label: 'Ask another question', action: { type: 'ask' } }
 const SUMMARY_OPTIONS = [
@@ -277,7 +282,10 @@ export default function Chatbot() {
       case 'ask':
         setFlow(null)
         inputRef.current?.focus()
-        return botSay('Sure, what would you like to know? Type your question below.', [MENU_BUTTON])
+        return botSay('Sure, what would you like to know? Type your question below, or pick a popular one.', [...POPULAR_QUESTIONS, MENU_BUTTON])
+      case 'question':
+        setFlow(null)
+        return respondToQuestion(action.text)
       case 'existingMenu':
         setFlow(null)
         return botSay('Thanks for being a Josan customer! What do you need help with?', EXISTING_MENU)
@@ -307,7 +315,7 @@ export default function Chatbot() {
     if (!question) return botSay('Hi there! 👋 How can we help with your project today?', MAIN_MENU)
 
     const faq = matchFaq(question)
-    if (!faq) return botSay(FALLBACK, [QUOTE_BUTTON, CALLBACK_BUTTON, MENU_BUTTON])
+    if (!faq) return botSay(FALLBACK, [QUOTE_BUTTON, CALLBACK_BUTTON, ...POPULAR_QUESTIONS, MENU_BUTTON])
     if (faq.start) return startFlow(faq.start, {}, fill(faq.answer))
     botSay(fill(faq.answer), followUps(faq.next, faq.service), faq.links)
   }
@@ -343,6 +351,11 @@ export default function Chatbot() {
     if (window.matchMedia('(max-width: 480px)').matches) setOpen(false)
   }
 
+  // Progress through a lead flow, counting only the steps the user is actually asked
+  const flowProgress = flow && currentStep
+    ? { step: flow.index + 1, total: steps.length, label: STEPS[currentStep].label }
+    : null
+
   const inputType = currentDef?.input === 'email' ? 'email' : currentDef?.input === 'tel' ? 'tel' : 'text'
   const placeholder = currentDef?.input === 'file'
     ? 'Upload a photo above, or type "skip"'
@@ -353,18 +366,36 @@ export default function Chatbot() {
       {open && (
         <section className="chatbot-panel" role="dialog" aria-label="Chat with Josan Construction & Landscaping">
           <header className="chatbot-header">
-            <img src="/assets/logo.png" alt="" className="chatbot-avatar" />
+            <div className="chatbot-avatar-wrap">
+              <img src="/assets/logo.png" alt="" className="chatbot-avatar" />
+              <span className="chatbot-online" aria-hidden="true" />
+            </div>
             <div className="chatbot-title">
               <strong>Josan Assistant</strong>
-              <span>Automated assistant · Replies instantly</span>
+              <span>Online · Replies instantly</span>
             </div>
+            <a href={CONTACT.phones[0].href} className="chatbot-icon-btn" aria-label={`Call us at ${CONTACT.phones[0].label}`} title={`Call ${CONTACT.phones[0].label}`}>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z" /></svg>
+            </a>
             <button type="button" className="chatbot-icon-btn" onClick={restart} aria-label="Restart conversation" title="Restart">↺</button>
             <button type="button" className="chatbot-icon-btn" onClick={() => setOpen(false)} aria-label="Close chat" title="Close">✕</button>
           </header>
 
+          {flowProgress && (
+            <div className="chatbot-progress" aria-label={`Step ${flowProgress.step} of ${flowProgress.total}`}>
+              <div className="chatbot-progress-text">
+                <span>{FLOWS[flow.name].title}</span>
+                <span>Step {flowProgress.step} of {flowProgress.total}</span>
+              </div>
+              <div className="chatbot-progress-track">
+                <div className="chatbot-progress-fill" style={{ width: `${(flowProgress.step / flowProgress.total) * 100}%` }} />
+              </div>
+            </div>
+          )}
+
           <div className="chatbot-messages" ref={listRef} aria-live="polite">
-            {messages.map(m => (
-              <div key={m.id} className={`chatbot-msg ${m.from}`}>
+            {messages.map((m, i) => (
+              <div key={m.id} className={`chatbot-msg ${m.from}${m.from === 'bot' && messages[i - 1]?.from === 'bot' ? ' grouped' : ''}`}>
                 <div className="chatbot-bubble">{m.text}</div>
                 {m.links && (
                   <div className="chatbot-links">
@@ -377,7 +408,7 @@ export default function Chatbot() {
               </div>
             ))}
             {typing && (
-              <div className="chatbot-msg bot">
+              <div className={`chatbot-msg bot${messages.at(-1)?.from === 'bot' ? ' grouped' : ''}`}>
                 <div className="chatbot-bubble chatbot-typing" aria-label="Assistant is typing">
                   <span /><span /><span />
                 </div>
@@ -420,11 +451,12 @@ export default function Chatbot() {
 
       <button
         type="button"
-        className={`chatbot-launcher${open ? ' open' : ''}`}
+        className={`chatbot-launcher${open ? ' open' : ''}${!open && teaser ? ' attention' : ''}`}
         onClick={open ? () => setOpen(false) : openChat}
         aria-label={open ? 'Close chat' : 'Chat with us'}
         aria-expanded={open}
       >
+        {!open && teaser && <span className="chatbot-badge" aria-hidden="true">1</span>}
         {open
           ? <span aria-hidden="true">✕</span>
           : <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.5 3 2 6.6 2 11c0 2.2 1.1 4.2 2.9 5.6-.2 1.5-.9 2.9-2 3.9 2.1 0 4-.8 5.4-2 1.2.3 2.4.5 3.7.5 5.5 0 10-3.6 10-8s-4.5-8-10-8z" /></svg>}
