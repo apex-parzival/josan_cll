@@ -53,12 +53,13 @@ export default function Gallery() {
           <p style={{ color: 'var(--gray-5)', marginBottom: '16px', fontSize: '0.95rem' }}>
             Explore 195+ real project photos organized by service category.
           </p>
-          <button
+          <a
+            href="/gallery"
             className="btn btn-primary"
-            onClick={() => { navigate('/gallery'); window.scrollTo({ top: 0, behavior: 'instant' }) }}
+            onClick={e => { e.preventDefault(); navigate('/gallery'); window.scrollTo({ top: 0, behavior: 'instant' }) }}
           >
             <span>View Full Gallery →</span>
-          </button>
+          </a>
         </div>
 
       </div>

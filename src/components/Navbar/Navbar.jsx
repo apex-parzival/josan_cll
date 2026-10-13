@@ -161,25 +161,31 @@ export default function Navbar() {
                   <div className="dropdown-menu">
                     <div className="dropdown-grid">
                       {SERVICES.map(s => (
-                        <button key={s} className="drop-item" onClick={() => handleServiceClick(s)}>
+                        <a key={s} href={`/services/${PAGE_MAP[s]}`} className="drop-item" onClick={e => { e.preventDefault(); handleServiceClick(s) }}>
                           {s}
-                        </button>
+                        </a>
                       ))}
                     </div>
                   </div>
                 </li>
               ) : (
                 <li key={id}>
-                  <button
-                    className={`nav-link${
-                      isPage
-                        ? location.pathname === `/${id}` ? ' active' : ''
-                        : activeId === id && location.pathname === '/' ? ' active' : ''
-                    }`}
-                    onClick={() => handleLinkClick(id)}
-                  >
-                    {label}
-                  </button>
+                  {isPage ? (
+                    <a
+                      href={`/${id}`}
+                      className={`nav-link${location.pathname === `/${id}` ? ' active' : ''}`}
+                      onClick={e => { e.preventDefault(); handleLinkClick(id) }}
+                    >
+                      {label}
+                    </a>
+                  ) : (
+                    <button
+                      className={`nav-link${activeId === id && location.pathname === '/' ? ' active' : ''}`}
+                      onClick={() => handleLinkClick(id)}
+                    >
+                      {label}
+                    </button>
+                  )}
                 </li>
               )
             )}
@@ -228,9 +234,9 @@ export default function Navbar() {
                   {dropOpen && (
                     <div className="drawer-drop">
                       {SERVICES.map(s => (
-                        <button key={s} className="drawer-drop-item" onClick={() => handleServiceClick(s)}>
+                        <a key={s} href={`/services/${PAGE_MAP[s]}`} className="drawer-drop-item" onClick={e => { e.preventDefault(); handleServiceClick(s) }}>
                           {s}
-                        </button>
+                        </a>
                       ))}
                     </div>
                   )}

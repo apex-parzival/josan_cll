@@ -5,6 +5,7 @@ import servicesData from '../../services_content_all.json'
 import IntroAnimation from '../ScrollSequence/IntroAnimation'
 import Marquee from '../Marquee/Marquee'
 import serviceGalleryMap from '../../service_galleries_map.json'
+import { getServiceSeo } from '../../seo/seoConfig'
 
 const VIDEO_FILES = {
   'artificial-grass-installation-turf': 'artificial grass.mp4',
@@ -41,6 +42,7 @@ export default function ServiceDetailPage() {
   const [failedPhotos, setFailedPhotos] = useState([])
 
   const service = servicesData[serviceId]
+  const seo = getServiceSeo(serviceId)
   const image = service ? service.image : '/assets/sod.webp'
   const servicePhotos = serviceGalleryMap[serviceId] || []
   const activePhotos = servicePhotos.filter(photo => !failedPhotos.includes(photo))
@@ -132,8 +134,9 @@ export default function ServiceDetailPage() {
       <header className="detail-hero" style={{ backgroundImage: `url('${image}')` }}>
         <div className="detail-hero-overlay" />
         <div className="container detail-hero-content">
-          <span className="detail-badge">Professional Services</span>
-          <h1 className="detail-title">{service.title}</h1>
+          <span className="detail-badge">Calgary &amp; Surrounding Areas</span>
+          <h1 className="detail-title">{seo.h1}</h1>
+          <p className="detail-subtitle" style={{ color: 'rgba(255,255,255,.85)', marginTop: '12px', fontSize: '1.1rem' }}>{service.title}</p>
         </div>
       </header>
 
@@ -149,9 +152,9 @@ export default function ServiceDetailPage() {
               ← Back to Home
             </button>
             <div className="detail-breadcrumbs">
-              <span className="crumb" onClick={onBack}>Home</span>
+              <a href="/" className="crumb" onClick={e => { e.preventDefault(); onBack() }}>Home</a>
               <span className="crumb-sep">/</span>
-              <span className="crumb-current">{serviceId.replace(/-/g, ' ')}</span>
+              <span className="crumb-current">{seo.name}</span>
             </div>
           </div>
 
@@ -168,13 +171,13 @@ export default function ServiceDetailPage() {
               {/* Real Project Gallery for this Service */}
               {activePhotos.length > 0 && (
                 <div className="service-gallery-block">
-                  <h3 className="service-gallery-title">📷 Real {service.title} Project Photos</h3>
+                  <h3 className="service-gallery-title">📷 Real {seo.name} Projects in Calgary</h3>
                   <div className="service-gallery-grid">
                     {activePhotos.map((photo, pIdx) => (
                       <div key={pIdx} className="service-gallery-thumb" onClick={() => setSelectedPhoto(photo)}>
                         <img 
                           src={photo} 
-                          alt={`${service.title} Project Photo ${pIdx + 1}`} 
+                          alt={`${seo.name} project in Calgary – photo ${pIdx + 1}`} 
                           loading="lazy" 
                           onError={() => setFailedPhotos(prev => [...prev, photo])}
                         />
@@ -190,7 +193,7 @@ export default function ServiceDetailPage() {
             <aside className="detail-sidebar">
               <div className="sidebar-card quote-sidebar">
                 <h3>Request a Free Quote</h3>
-                <p>Ready to start your {serviceId.replace('-', ' ')} project? Fill out our form or call us directly for a free estimate.</p>
+                <p>Ready to start your {seo.name.toLowerCase()} project in Calgary? Fill out our form or call us directly for a free estimate.</p>
                 <div className="sidebar-contact-links" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   <a href="tel:5873944029" className="sidebar-phone-btn">
                     📞 Call +1 (587) 394-4029

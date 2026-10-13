@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { HashRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom'
 import SEO from './components/SEO/SEO'
 import Navbar from './components/Navbar/Navbar'
 import Hero from './components/Hero/Hero'
@@ -36,9 +36,21 @@ function ScrollRevealManager() {
   return null
 }
 
-export default function App() {
+function NotFound() {
   return (
-    <HashRouter>
+    <section className="service-error" style={{ padding: '160px 20px 80px', textAlign: 'center' }}>
+      <h1>Page Not Found</h1>
+      <p style={{ margin: '16px 0 24px' }}>The page you're looking for doesn't exist or has moved.</p>
+      <Link to="/" className="btn btn-primary"><span>Back to Home</span></Link>
+    </section>
+  )
+}
+
+// Routes + layout without a router, so it can be rendered on the client
+// (BrowserRouter) and at build time (StaticRouter, see entry-server.jsx).
+export function AppShell() {
+  return (
+    <>
       <ScrollRevealManager />
       <SEO />
       <Navbar />
@@ -76,11 +88,20 @@ export default function App() {
               <Contact />
             </>
           } />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <Footer />
       <BackToTop />
       <Chatbot />
-    </HashRouter>
+    </>
+  )
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppShell />
+    </BrowserRouter>
   )
 }

@@ -7,7 +7,7 @@ const ITEMS = [
   { text: '🪨 Patios', id: 'patios' },
   { text: '🌲 Trees & Sod', id: 'trees' },
   { text: '🔧 Fencing', id: 'fencing-services' },
-  { text: '🏠 Basement Renovations', id: 'basement-renovation' },
+  { text: '🏠 Basement Renovations', id: 'basement-renovations' },
   { text: '🌺 Flower Beds', id: 'flower-bed' },
   { text: '⛏️ Retaining Walls', id: 'retaining-walls' },
   { text: '🚜 Bobcat Service', id: 'bobcat-service' },
@@ -33,9 +33,9 @@ export default function Marquee() {
     <div className="marquee-strip" aria-label="Services Ticker">
       <div className="marquee-track">
         {doubled.map((item, i) => (
-          <span key={i} onClick={() => handleClick(item.id)} className="marquee-item">
+          <a key={i} href={`/services/${item.id}`} onClick={e => { e.preventDefault(); handleClick(item.id) }} className="marquee-item" tabIndex={i < ITEMS.length ? 0 : -1} aria-hidden={i >= ITEMS.length ? 'true' : undefined}>
             {item.text}
-          </span>
+          </a>
         ))}
       </div>
     </div>

@@ -79,28 +79,28 @@ export default function Footer() {
             <div className="footer-col">
               <h4>Services</h4>
               <ul>
-                <li><button onClick={() => handleServiceClick('Artificial Grass / Turf')}>Artificial Grass / Turf</button></li>
-                <li><button onClick={() => handleServiceClick('Deck Building')}>Deck Building</button></li>
-                <li><button onClick={() => handleServiceClick('Patios')}>Patios</button></li>
-                <li><button onClick={() => handleServiceClick('Fencing Services')}>Fencing Services</button></li>
-                <li><button onClick={() => handleServiceClick('Basement Renovations')}>Basement Renovations</button></li>
-                <li><button onClick={() => handleServiceClick('Sod Installation')}>Sod Installation</button></li>
-                <li><button onClick={() => handleServiceClick('Retaining Walls')}>Retaining Walls</button></li>
-                <li><button onClick={() => handleServiceClick('Pergola & Gazebo')}>Pergola & Gazebo</button></li>
+                <li><a className="footer-link" href={`/services/${FOOTER_PAGE_MAP['Artificial Grass / Turf']}`} onClick={e => { e.preventDefault(); handleServiceClick('Artificial Grass / Turf') }}>Artificial Grass / Turf</a></li>
+                <li><a className="footer-link" href={`/services/${FOOTER_PAGE_MAP['Deck Building']}`} onClick={e => { e.preventDefault(); handleServiceClick('Deck Building') }}>Deck Building</a></li>
+                <li><a className="footer-link" href={`/services/${FOOTER_PAGE_MAP['Patios']}`} onClick={e => { e.preventDefault(); handleServiceClick('Patios') }}>Patios</a></li>
+                <li><a className="footer-link" href={`/services/${FOOTER_PAGE_MAP['Fencing Services']}`} onClick={e => { e.preventDefault(); handleServiceClick('Fencing Services') }}>Fencing Services</a></li>
+                <li><a className="footer-link" href={`/services/${FOOTER_PAGE_MAP['Basement Renovations']}`} onClick={e => { e.preventDefault(); handleServiceClick('Basement Renovations') }}>Basement Renovations</a></li>
+                <li><a className="footer-link" href={`/services/${FOOTER_PAGE_MAP['Sod Installation']}`} onClick={e => { e.preventDefault(); handleServiceClick('Sod Installation') }}>Sod Installation</a></li>
+                <li><a className="footer-link" href={`/services/${FOOTER_PAGE_MAP['Retaining Walls']}`} onClick={e => { e.preventDefault(); handleServiceClick('Retaining Walls') }}>Retaining Walls</a></li>
+                <li><a className="footer-link" href={`/services/${FOOTER_PAGE_MAP['Pergola & Gazebo']}`} onClick={e => { e.preventDefault(); handleServiceClick('Pergola & Gazebo') }}>Pergola & Gazebo</a></li>
               </ul>
             </div>
 
             <div className="footer-col">
               <h4>More Services</h4>
               <ul>
-                <li><button onClick={() => handleServiceClick('Bobcat Service')}>Bobcat Service</button></li>
-                <li><button onClick={() => handleServiceClick('Trees & Gardening')}>Trees & Gardening</button></li>
-                <li><button onClick={() => handleServiceClick('Railing & Gates')}>Railing & Gates</button></li>
-                <li><button onClick={() => handleServiceClick('Painting Service')}>Painting Service</button></li>
-                <li><button onClick={() => handleServiceClick('Kitchen Service')}>Kitchen Service</button></li>
-                <li><button onClick={() => handleServiceClick('Rock Landscaping')}>Rock Landscaping</button></li>
-                <li><button onClick={() => handleServiceClick('Framing Service')}>Framing Service</button></li>
-                <li><button onClick={() => handleServiceClick('Flower Bed')}>Flower Bed</button></li>
+                <li><a className="footer-link" href={`/services/${FOOTER_PAGE_MAP['Bobcat Service']}`} onClick={e => { e.preventDefault(); handleServiceClick('Bobcat Service') }}>Bobcat Service</a></li>
+                <li><a className="footer-link" href={`/services/${FOOTER_PAGE_MAP['Trees & Gardening']}`} onClick={e => { e.preventDefault(); handleServiceClick('Trees & Gardening') }}>Trees & Gardening</a></li>
+                <li><a className="footer-link" href={`/services/${FOOTER_PAGE_MAP['Railing & Gates']}`} onClick={e => { e.preventDefault(); handleServiceClick('Railing & Gates') }}>Railing & Gates</a></li>
+                <li><a className="footer-link" href={`/services/${FOOTER_PAGE_MAP['Painting Service']}`} onClick={e => { e.preventDefault(); handleServiceClick('Painting Service') }}>Painting Service</a></li>
+                <li><a className="footer-link" href={`/services/${FOOTER_PAGE_MAP['Kitchen Service']}`} onClick={e => { e.preventDefault(); handleServiceClick('Kitchen Service') }}>Kitchen Service</a></li>
+                <li><a className="footer-link" href={`/services/${FOOTER_PAGE_MAP['Rock Landscaping']}`} onClick={e => { e.preventDefault(); handleServiceClick('Rock Landscaping') }}>Rock Landscaping</a></li>
+                <li><a className="footer-link" href={`/services/${FOOTER_PAGE_MAP['Framing Service']}`} onClick={e => { e.preventDefault(); handleServiceClick('Framing Service') }}>Framing Service</a></li>
+                <li><a className="footer-link" href={`/services/${FOOTER_PAGE_MAP['Flower Bed']}`} onClick={e => { e.preventDefault(); handleServiceClick('Flower Bed') }}>Flower Bed</a></li>
               </ul>
             </div>
 

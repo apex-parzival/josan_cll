@@ -79,6 +79,7 @@
   flex-grow: 1;
 }
 .service-btn {
+  display: inline-block;
   font-size: .83rem;
   font-weight: 700;
   color: var(--g600);

@@ -98,11 +98,11 @@ export default function Hero() {
         <h1 className="hero-title reveal up d1">
           Transform Your<br />
           <span className="hero-accent">Outdoor Space</span><br />
-          Into Something Beautiful
+          Across Calgary
         </h1>
 
         <p className="hero-subtitle reveal up d2">
-          Expert landscaping, construction & outdoor design services. From decks and patios
+          Expert Calgary landscaping, construction & outdoor design services. From decks and patios
           to full basement renovations — we build it all with care, skill, and pride.
         </p>
 

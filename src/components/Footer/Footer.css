@@ -93,7 +93,8 @@
   flex-direction: column;
   gap: 10px;
 }
-.footer-col ul li button {
+.footer-col ul li button,
+.footer-col ul li .footer-link {
   font-size: .85rem;
   color: rgba(255,255,255,.5);
   transition: color .25s;
@@ -103,7 +104,8 @@
   cursor: pointer;
   padding: 0;
 }
-.footer-col ul li button:hover {
+.footer-col ul li button:hover,
+.footer-col ul li .footer-link:hover {
   color: var(--g400);
 }
 
@@ -184,7 +186,8 @@
     font-size: .85rem;
     margin-bottom: 14px;
   }
-  .footer-col ul li button {
+  .footer-col ul li button,
+.footer-col ul li .footer-link {
     font-size: .82rem;
     padding: 3px 0;
   }

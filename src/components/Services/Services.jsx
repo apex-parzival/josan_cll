@@ -85,9 +85,9 @@ export default function Services() {
               </div>
               <h3>{s.title}</h3>
               <p>{s.desc}</p>
-              <button className="service-btn" onClick={() => handleCardClick(s.title)}>
-                Learn More →
-              </button>
+              <a href={`/services/${s.id}`} className="service-btn" onClick={e => { e.preventDefault(); handleCardClick(s.title) }}>
+                Learn More<span className="sr-only"> about {s.title}</span> →
+              </a>
             </div>
           ))}
         </div>

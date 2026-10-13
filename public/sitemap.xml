@@ -1,96 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Core Pages -->
   <url>
     <loc>https://josancll.ca/</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-10-13</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://josancll.ca/#/gallery</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://josancll.ca/gallery</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://josancll.ca/reviews</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://josancll.ca/services/artificial-grass-installation-turf</loc>
+    <lastmod>2026-10-13</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://josancll.ca/#/reviews</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://josancll.ca/services/basement-renovation-home</loc>
+    <lastmod>2026-10-13</lastmod>
     <priority>0.8</priority>
   </url>
-
-  <!-- Service Pages -->
   <url>
-    <loc>https://josancll.ca/#/services/artificial-grass-installation-turf</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://josancll.ca/services/basement-renovations</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://josancll.ca/#/services/deck-building-services</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://josancll.ca/services/bobcat-service</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://josancll.ca/#/services/patios</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://josancll.ca/services/deck-building-services</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://josancll.ca/#/services/fencing-services</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://josancll.ca/services/decking</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://josancll.ca/#/services/basement-renovations</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://josancll.ca/services/fencing-services</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://josancll.ca/#/services/sod</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://josancll.ca/services/flower-bed</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://josancll.ca/#/services/retaining-walls</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://josancll.ca/services/framing-service</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://josancll.ca/#/services/pergola-services</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://josancll.ca/services/garage</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://josancll.ca/#/services/bobcat-service</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://josancll.ca/services/gate-building</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://josancll.ca/#/services/trees</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://josancll.ca/services/gazebo</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://josancll.ca/#/services/railing</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://josancll.ca/services/kitchen-service</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://josancll.ca/#/services/painting-service</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://josancll.ca/services/lot-gardening</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://josancll.ca/services/new-basement-construction</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://josancll.ca/services/painting-service</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://josancll.ca/services/patios</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://josancll.ca/services/pergola-services</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://josancll.ca/services/professional-home-renovation</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://josancll.ca/services/railing</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://josancll.ca/services/retaining-walls</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://josancll.ca/services/rock</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://josancll.ca/services/sod</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://josancll.ca/services/trees</loc>
+    <lastmod>2026-10-13</lastmod>
+    <priority>0.8</priority>
   </url>
 </urlset>

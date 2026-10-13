@@ -201,12 +201,13 @@ export default function Testimonials() {
           <p style={{ color: 'var(--gray-5)', marginBottom: '16px', fontSize: '0.95rem' }}>
             See all video testimonials and written reviews from our clients.
           </p>
-          <button
+          <a
+            href="/reviews"
             className="btn btn-primary"
-            onClick={() => { navigate('/reviews'); window.scrollTo({ top: 0, behavior: 'instant' }) }}
+            onClick={e => { e.preventDefault(); navigate('/reviews'); window.scrollTo({ top: 0, behavior: 'instant' }) }}
           >
             <span>See All Reviews & Videos →</span>
-          </button>
+          </a>
         </div>
 
       </div>

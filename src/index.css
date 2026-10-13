@@ -236,3 +236,9 @@ html { scrollbar-color: var(--g500) var(--gray-2); }
 @keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
 @keyframes floatBadge { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 @keyframes scrollBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+
+/* Visually hidden but readable by screen readers & search engines */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
