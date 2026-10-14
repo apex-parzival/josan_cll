@@ -1,69 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './ReviewsPage.css'
+import { PROJECT_VIDEOS } from '../../seo/videos'
 
-const VIDEO_TESTIMONIALS = [
-  {
-    id: 1,
-    videoUrl: '/assets/testimonials/testimonial_video_1.mp4',
-    stars: '★★★★★',
-    title: 'Backyard Landscaping & Sod Installation',
-    text: "Watch our jobsite transformation — precision sod installation and complete backyard landscaping in Calgary.",
-    author: 'Gurpreet & Family',
-    loc: 'Cornerstone, Calgary',
-    service: 'Landscaping & Sod'
-  },
-  {
-    id: 2,
-    videoUrl: '/assets/testimonials/testimonial_video_2.mp4',
-    stars: '★★★★★',
-    title: 'Custom Decking & Retaining Wall',
-    text: "See our custom multi-level deck building and heavy-duty stone retaining wall construction.",
-    author: 'Michael R.',
-    loc: 'Saddle Ridge, Calgary',
-    service: 'Decking & Wall'
-  },
-  {
-    id: 3,
-    videoUrl: '/assets/testimonials/testimonial_video_3.mp4',
-    stars: '★★★★★',
-    title: 'Legal Basement Suite Renovation',
-    text: "Tour this legal basement suite transformation from initial framing to final high-end finishes.",
-    author: 'Amandeep S.',
-    loc: 'Redstone, Calgary',
-    service: 'Basement Renovation'
-  },
-  {
-    id: 4,
-    videoUrl: '/assets/testimonials/testimonial_video_4.mp4',
-    stars: '★★★★★',
-    title: 'Perimeter Fencing & Patio Design',
-    text: "Check out this custom cedar fence building and modern outdoor stone patio project.",
-    author: 'Sarah & David L.',
-    loc: 'Savanna, Calgary',
-    service: 'Fencing & Patio'
-  },
-  {
-    id: 5,
-    videoUrl: '/assets/testimonials/testimonial_video_5.mp4',
-    stars: '★★★★★',
-    title: 'Bobcat Service & Site Excavation',
-    text: "Precision Bobcat excavation, lot grading, and site preparation executed by skilled operators.",
-    author: 'Jason K.',
-    loc: 'Calgary, AB',
-    service: 'Bobcat Service'
-  },
-  {
-    id: 6,
-    videoUrl: '/assets/testimonials/testimonial_video_6.mp4',
-    stars: '★★★★★',
-    title: 'Whole Home Interior Renovation',
-    text: "Full interior remodeling and structural framing project walkthrough completed by Josan Construction.",
-    author: 'Rajinder P.',
-    loc: 'Cornerstone, Calgary',
-    service: 'Home Renovation'
-  }
-]
+// Videos live in src/seo/videos.js (shared with VideoObject structured data)
+const VIDEO_TESTIMONIALS = PROJECT_VIDEOS
 
 const WRITTEN_TESTIMONIALS = [
   {
@@ -134,7 +75,7 @@ export default function ReviewsPage() {
           <div className="section-label light">Client Feedback</div>
           <h1 className="reviews-hero-title">What Our Clients Say</h1>
           <p className="reviews-hero-sub">
-            Real video testimonials and written reviews from homeowners across Calgary who trusted Josan Construction & Landscaping.
+            Project videos and reviews from homeowners across Calgary who trusted Josan Construction & Landscaping.
           </p>
           <div className="reviews-hero-stats">
             <div className="reviews-stat">
@@ -144,7 +85,7 @@ export default function ReviewsPage() {
             <div className="reviews-stat-divider" />
             <div className="reviews-stat">
               <span className="reviews-stat-num">{VIDEO_TESTIMONIALS.length}</span>
-              <span className="reviews-stat-lbl">Video Reviews</span>
+              <span className="reviews-stat-lbl">Project Videos</span>
             </div>
             <div className="reviews-stat-divider" />
             <div className="reviews-stat">
@@ -163,7 +104,7 @@ export default function ReviewsPage() {
               className={`reviews-tab-btn${activeTab === 'videos' ? ' active' : ''}`}
               onClick={() => setActiveTab('videos')}
             >
-              🎥 Video Testimonials
+              🎥 Project Videos
               <span className="reviews-tab-count">{VIDEO_TESTIMONIALS.length}</span>
             </button>
             <button
@@ -186,8 +127,8 @@ export default function ReviewsPage() {
             <div className="reviews-videos-section">
               <div className="reviews-section-header">
                 <div>
-                  <h2 className="reviews-section-title">🎥 Client Video Testimonials</h2>
-                  <p className="reviews-section-sub">Watch {VIDEO_TESTIMONIALS.length} real jobsite videos from our clients across Calgary</p>
+                  <h2 className="reviews-section-title">🎥 Project &amp; Client Videos</h2>
+                  <p className="reviews-section-sub">Watch {VIDEO_TESTIMONIALS.length} videos of our work and clients across Calgary</p>
                 </div>
                 <div className="carousel-arrows">
                   <button className="carousel-arrow" onClick={() => scrollVideoCarousel('left')} aria-label="Previous Video">←</button>
@@ -201,6 +142,8 @@ export default function ReviewsPage() {
                     <div className="reviews-video-wrapper">
                       <video
                         src={v.videoUrl}
+                        poster={v.thumbnailUrl}
+                        title={v.title}
                         controls
                         playsInline
                         preload="metadata"
@@ -210,7 +153,6 @@ export default function ReviewsPage() {
                     <div className="reviews-video-body">
                       <div className="reviews-video-top">
                         <span className="reviews-service-tag">{v.service}</span>
-                        <span className="reviews-stars">{v.stars}</span>
                       </div>
                       <h3 className="reviews-video-title">{v.title}</h3>
                       <p className="reviews-video-text">{v.text}</p>

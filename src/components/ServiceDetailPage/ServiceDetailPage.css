@@ -149,6 +149,7 @@
   box-shadow: var(--sh-sm);
 }
 .card-question {
+  margin-top: 0;
   font-family: var(--font);
   font-size: 1.18rem;
   font-weight: 800;
@@ -294,4 +295,35 @@
 
 .service-gallery-thumb:hover .thumb-overlay {
   opacity: 1;
+}
+
+/* Calgary permit facts + related services */
+.calgary-facts-list,
+.related-services-list {
+  margin: 0 0 12px;
+  padding-left: 20px;
+  color: var(--gray-7);
+  font-size: 1.02rem;
+  line-height: 1.7;
+}
+.calgary-facts-list { list-style: disc; }
+.calgary-facts-list li + li { margin-top: 6px; }
+.calgary-facts-note {
+  font-size: .88rem;
+  color: var(--gray-5);
+  line-height: 1.6;
+}
+.calgary-facts-note a,
+.related-services-list a {
+  color: var(--g600);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.related-services-list {
+  list-style: none;
+  padding-left: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px 20px;
 }

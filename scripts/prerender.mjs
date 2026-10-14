@@ -5,13 +5,15 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
+import { exportMarkdown } from './markdown-export.mjs'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const distDir = path.join(root, 'dist')
 const ssrDir = path.join(root, 'dist-ssr')
 
 const ssrEntry = fs.readdirSync(ssrDir).find(f => /^entry-server\.m?js$/.test(f))
-const { render, getSeo, SERVICE_IDS } = await import(pathToFileURL(path.join(ssrDir, ssrEntry)).href)
+const ssr = await import(pathToFileURL(path.join(ssrDir, ssrEntry)).href)
+const { render, getSeo, SERVICE_IDS } = ssr
 
 const template = fs.readFileSync(path.join(distDir, 'index.html'), 'utf8')
 
@@ -70,6 +72,10 @@ const today = new Date().toISOString().slice(0, 10)
 const priority = url => url === '/' ? '1.0' : url.startsWith('/services/') ? '0.8' : '0.6'
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<!--
+If you are an LLM looking for site information, start at https://josancll.ca/llms.txt.
+Use https://josancll.ca/sitemap.md to find the relevant topic and its linked Markdown answer; if it is absent, report that gap.
+-->
 ${routes.map(url => `  <url>
     <loc>${getSeo(url).canonical}</loc>
     <lastmod>${today}</lastmod>
@@ -79,5 +85,9 @@ ${routes.map(url => `  <url>
 `
 writeFile('sitemap.xml', sitemap)
 console.log(`  wrote sitemap.xml (${routes.length} URLs)`)
+
+// Markdown knowledge surface: /llms.txt, /sitemap.md, /llm/** (same source as the HTML)
+const mdResult = exportMarkdown({ root, distDir, data: ssr })
+console.log(`  wrote ${mdResult.count} Markdown resources (${mdResult.pages} pages, ${mdResult.revision})`)
 
 fs.rmSync(ssrDir, { recursive: true, force: true })

@@ -26,3 +26,6 @@ dist-ssr
 # Ignore raw source folders
 /testimonials/
 /video/
+
+# private Markdown export verification inputs (scripts/markdown-export.mjs)
+md-source

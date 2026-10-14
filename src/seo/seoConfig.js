@@ -2,10 +2,14 @@
 // Used by the <SEO /> component (client-side navigation) AND by
 // scripts/prerender.mjs (static HTML generated at build time for Google).
 import servicesData from '../services_content_all.json'
+import { PROJECT_VIDEOS, VIDEOS_UPLOAD_DATE } from './videos.js'
 
 export const SITE_URL = 'https://josancll.ca'
 export const BUSINESS_NAME = 'Josan Construction & Landscaping LTD'
 export const PHONE = '+1 (587) 394-4029'
+// Bump when page copy (services JSON, SEO text or Calgary facts) is reviewed/changed.
+export const CONTENT_UPDATED = '2026-10-14'
+export { servicesData }
 
 // Calgary-focused names, titles and descriptions for every service page.
 // `h1` is shown as the page heading; `title` is the <title> tag (~60 chars).
@@ -176,8 +180,8 @@ export function getServiceSeo(serviceId) {
 export function getSeo(pathname) {
   const path = (pathname || '/').replace(/\/+$/, '') || '/'
 
-  let title = 'Landscaping & Construction Calgary | Josan Construction & Landscaping'
-  let description = 'Calgary landscaping & construction contractor: custom decks, patios, fencing, sod & artificial grass, retaining walls and basement renovations. Free quote: (587) 394-4029.'
+  let title = 'Landscaping & Construction Calgary | Josan Construction'
+  let description = 'Calgary landscaping & construction: custom decks, patios, fencing, sod, artificial grass, retaining walls & basements. Free quote: (587) 394-4029.'
   let image = `${SITE_URL}/assets/sod.webp`
   const breadcrumbs = [{ name: 'Home', item: `${SITE_URL}/` }]
   let found = true
@@ -189,8 +193,8 @@ export function getSeo(pathname) {
     description = 'Real project photos of our landscaping, custom decks, stone patios, fences and basement renovations completed for homeowners across Calgary.'
     breadcrumbs.push({ name: 'Project Gallery', item: `${SITE_URL}/gallery` })
   } else if (path === '/reviews') {
-    title = 'Customer Reviews & Video Testimonials | Josan Construction Calgary'
-    description = 'Read reviews and watch video testimonials from Calgary homeowners who chose Josan Construction & Landscaping for their decks, patios, landscaping and renovations.'
+    title = 'Reviews & Project Videos | Josan Construction Calgary'
+    description = 'Watch project videos and read reviews from Calgary homeowners who chose Josan Construction & Landscaping for patios, turf, sod, decks and more.'
     breadcrumbs.push({ name: 'Client Reviews', item: `${SITE_URL}/reviews` })
   } else if (path.startsWith('/services/')) {
     const serviceId = path.split('/services/')[1]
@@ -224,6 +228,20 @@ export function getSeo(pathname) {
         '@type': 'ListItem', position: idx + 1, name: b.name, item: b.item
       }))
     })
+  }
+
+  if (found && path === '/reviews') {
+    PROJECT_VIDEOS.forEach(v => jsonLd.push({
+      '@context': 'https://schema.org',
+      '@type': 'VideoObject',
+      name: v.title,
+      description: v.text,
+      thumbnailUrl: `${SITE_URL}${v.thumbnailUrl}`,
+      contentUrl: `${SITE_URL}${v.videoUrl}`,
+      uploadDate: `${VIDEOS_UPLOAD_DATE}T00:00:00-06:00`,
+      duration: v.duration,
+      publisher: { '@id': `${SITE_URL}/#organization` }
+    }))
   }
 
   if (found && path.startsWith('/services/')) {

@@ -28,5 +28,250 @@
       "destination": "/services/basement-renovations",
       "permanent": true
     }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)\\.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/llms.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/home.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/artificial-grass-installation-turf.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/artificial-grass-installation-turf>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/basement-renovation-home.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/basement-renovation-home>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/basement-renovations.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/basement-renovations>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/bobcat-service.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/bobcat-service>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/deck-building-services.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/deck-building-services>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/decking.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/decking>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/fencing-services.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/fencing-services>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/flower-bed.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/flower-bed>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/framing-service.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/framing-service>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/garage.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/garage>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/gate-building.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/gate-building>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/gazebo.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/gazebo>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/kitchen-service.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/kitchen-service>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/lot-gardening.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/lot-gardening>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/new-basement-construction.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/new-basement-construction>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/painting-service.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/painting-service>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/patios.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/patios>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/pergola-services.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/pergola-services>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/professional-home-renovation.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/professional-home-renovation>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/railing.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/railing>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/retaining-walls.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/retaining-walls>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/rock.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/rock>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/sod.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/sod>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/trees.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/services/trees>; rel=\"canonical\""
+        }
+      ]
+    }
   ]
 }

@@ -2,3 +2,6 @@ User-agent: *
 Allow: /
 
 Sitemap: https://josancll.ca/sitemap.xml
+
+# If you are an LLM looking for site information, start at https://josancll.ca/llms.txt.
+# Use https://josancll.ca/sitemap.md to find the relevant topic and its linked Markdown answer; if it is absent, report that gap.

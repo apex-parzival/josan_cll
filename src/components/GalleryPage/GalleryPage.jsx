@@ -49,7 +49,9 @@ export default function GalleryPage() {
     }
   })
 
-  const [organizerMode, setOrganizerMode] = useState(true)
+  // Internal photo-sorting tool: only shown when the URL has ?organize=1
+  const showOrganizer = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('organize') === '1'
+  const [organizerMode, setOrganizerMode] = useState(showOrganizer)
   const [activeMenuPhoto, setActiveMenuPhoto] = useState(null)
   const [toastMsg, setToastMsg] = useState(null)
 
@@ -212,7 +214,8 @@ export default function GalleryPage() {
         </div>
       </header>
 
-      {/* Photo Organizer Admin Control Bar */}
+      {/* Photo Organizer Admin Control Bar (internal tool, ?organize=1 only) */}
+      {showOrganizer && (
       <div className="organizer-toolbar">
         <div className="container organizer-toolbar-inner">
           <div className="organizer-toolbar-left">
@@ -242,6 +245,7 @@ export default function GalleryPage() {
           )}
         </div>
       </div>
+      )}
 
       {/* Category Filter Cards */}
       <div className="gallery-categories-section">

@@ -6,6 +6,8 @@ import IntroAnimation from '../ScrollSequence/IntroAnimation'
 import Marquee from '../Marquee/Marquee'
 import serviceGalleryMap from '../../service_galleries_map.json'
 import { getServiceSeo } from '../../seo/seoConfig'
+import { getServiceCards } from '../../seo/serviceCards'
+import { CALGARY_FACTS, FACTS_DISCLAIMER, RELATED_SERVICES } from '../../seo/calgaryFacts'
 
 const VIDEO_FILES = {
   'artificial-grass-installation-turf': 'artificial grass.mp4',
@@ -70,53 +72,6 @@ export default function ServiceDetailPage() {
     )
   }
 
-  // Helper to determine if a paragraph item should be rendered as a heading
-  function isHeading(item) {
-    if (item.tag === 'h2' || item.tag === 'h3') return true
-    // If paragraph text is short, bold, or has no ending period, treat it as a heading
-    const text = item.text.trim()
-    return text.length < 60 && !text.endsWith('.') && !text.endsWith('?')
-  }
-
-  // Parse paragraphs and group headings into the next paragraph card as bold questions
-  function getServiceCards(paragraphs) {
-    const cards = []
-    let pendingHeadings = []
-
-    paragraphs.forEach((item) => {
-      if (isHeading(item)) {
-        pendingHeadings.push(item.text.trim())
-      } else {
-        let headingText = ""
-        if (pendingHeadings.length > 0) {
-          headingText = pendingHeadings.map(h => {
-            let clean = h.replace(/\.+$/, "")
-            if (!clean.endsWith("?")) {
-              clean += "?"
-            }
-            return clean
-          }).join(" ")
-          pendingHeadings = []
-        }
-        
-        cards.push({
-          heading: headingText,
-          text: item.text
-        })
-      }
-    })
-
-    // Fallback for trailing headings
-    if (pendingHeadings.length > 0) {
-      cards.push({
-        heading: pendingHeadings.map(h => h.endsWith("?") ? h : h + "?").join(" "),
-        text: ""
-      })
-    }
-
-    return cards
-  }
-
   const serviceCards = getServiceCards(service.paragraphs)
 
   return (
@@ -163,10 +118,42 @@ export default function ServiceDetailPage() {
             <div className="detail-content-area">
               {serviceCards.map((card, idx) => (
                 <div key={idx} className="detail-paragraph">
-                  {card.heading && <div className="card-question">{card.heading}</div>}
+                  {card.heading && <h2 className="card-question">{card.heading}</h2>}
                   {card.text && <p className="card-answer">{card.text}</p>}
                 </div>
               ))}
+
+              {/* Calgary permit facts (source-cited) */}
+              {CALGARY_FACTS[serviceId] && (
+                <section className="detail-paragraph calgary-facts" id="calgary-permit-facts">
+                  <h2 className="card-question">{CALGARY_FACTS[serviceId].heading}</h2>
+                  <ul className="calgary-facts-list">
+                    {CALGARY_FACTS[serviceId].points.map((pt, i) => <li key={i}>{pt}</li>)}
+                  </ul>
+                  <p className="calgary-facts-note">
+                    {FACTS_DISCLAIMER} Source:{' '}
+                    {CALGARY_FACTS[serviceId].sources.map((src, i) => (
+                      <a key={i} href={src.url} target="_blank" rel="noopener noreferrer">{src.label}</a>
+                    ))}
+                  </p>
+                </section>
+              )}
+
+              {/* Related services (contextual internal links) */}
+              {RELATED_SERVICES[serviceId] && (
+                <nav className="detail-paragraph related-services" aria-label="Related services">
+                  <h2 className="card-question">Related services in Calgary</h2>
+                  <ul className="related-services-list">
+                    {RELATED_SERVICES[serviceId].filter(id => servicesData[id]).map(id => (
+                      <li key={id}>
+                        <a href={`/services/${id}`} onClick={e => { e.preventDefault(); navigate(`/services/${id}`) }}>
+                          {getServiceSeo(id).h1}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
+              )}
 
               {/* Real Project Gallery for this Service */}
               {activePhotos.length > 0 && (

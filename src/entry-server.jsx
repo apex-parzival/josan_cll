@@ -5,7 +5,9 @@ import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
 import { AppShell } from './App.jsx'
 
-export { getSeo, SERVICE_IDS } from './seo/seoConfig.js'
+export { getSeo, getServiceSeo, SERVICE_IDS, SITE_URL, CONTENT_UPDATED, servicesData } from './seo/seoConfig.js'
+export { CALGARY_FACTS, FACTS_DISCLAIMER, FACTS_CHECKED, RELATED_SERVICES } from './seo/calgaryFacts.js'
+export { getServiceCards } from './seo/serviceCards.js'
 
 export function render(url) {
   return renderToString(
