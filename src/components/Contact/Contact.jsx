@@ -181,6 +181,13 @@ export default function Contact() {
                   <span>Mon – Sat: 8:00 AM – 6:00 PM</span>
                 </div>
               </div>
+              <div className="contact-item">
+                <div className="contact-icon">🗣️</div>
+                <div>
+                  <strong>Languages</strong>
+                  <span>English, Hindi, Punjabi &amp; Urdu</span>
+                </div>
+              </div>
             </div>
 
             <div className="contact-social">

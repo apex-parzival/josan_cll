@@ -30,6 +30,7 @@ const CONTACT = [
   '- Phone: [+1 (587) 394-4029](tel:+15873944029) or [+1 (587) 227-8001](tel:+15872278001)',
   '- Email: [info@josancll.ca](mailto:info@josancll.ca)',
   '- Hours: Monday to Saturday, 8 AM to 6 PM',
+  '- Languages spoken: English, Hindi, Punjabi and Urdu',
   '- Service area: Calgary, Airdrie, Chestermere, Cochrane and Okotoks',
   '- Estimates: free, no-obligation quotes'
 ].join('\n')
@@ -41,7 +42,8 @@ function topicOf(id) {
 
 export function exportMarkdown({ root, distDir, data }) {
   const { SITE_URL, CONTENT_UPDATED, servicesData, getServiceSeo, getServiceCards,
-    CALGARY_FACTS, FACTS_DISCLAIMER, FACTS_CHECKED, RELATED_SERVICES, SERVICE_IDS } = data
+    CALGARY_FACTS, FACTS_DISCLAIMER, FACTS_CHECKED, RELATED_SERVICES, SERVICE_IDS,
+    WRITTEN_REVIEWS, PROJECT_VIDEOS } = data
   const origin = SITE_URL
 
   const missing = SERVICE_IDS.filter(id => topicOf(id) === 'company')
@@ -49,7 +51,7 @@ export function exportMarkdown({ root, distDir, data }) {
 
   // Source revision = hash of the content sources (same inputs as the HTML pages)
   const hash = crypto.createHash('sha256')
-  for (const rel of ['src/services_content_all.json', 'src/seo/seoConfig.js', 'src/seo/calgaryFacts.js', 'scripts/markdown-export.mjs']) {
+  for (const rel of ['src/services_content_all.json', 'src/seo/seoConfig.js', 'src/seo/calgaryFacts.js', 'src/seo/reviews.js', 'src/seo/videos.js', 'scripts/markdown-export.mjs']) {
     hash.update(fs.readFileSync(path.join(root, rel)))
   }
   const revision = `content-${hash.digest('hex').slice(0, 12)}`
@@ -108,9 +110,28 @@ export function exportMarkdown({ root, distDir, data }) {
     })
   }
 
+  // Reviews page: written reviews (confirmed genuine by the owner) + project videos
+  const reviewsBody = [
+    '## Written customer reviews',
+    '',
+    ...WRITTEN_REVIEWS.flatMap(r => [
+      `### ${r.title}`,
+      '',
+      `> ${r.text}`,
+      '',
+      `${r.author}, ${r.loc} (${r.service})`,
+      ''
+    ]),
+    '## Project and client videos',
+    '',
+    ...PROJECT_VIDEOS.map(v => `- ${v.title}: ${v.text}`),
+    '',
+    CONTACT
+  ].join('\n')
+  pages.push({ id: 'reviews', url: `${origin}/reviews`, title: 'Customer Reviews and Project Videos', purpose: 'Written reviews from Calgary homeowners and descriptions of project videos', topic: 'company', body: reviewsBody })
+
   const excluded = [
-    { id: 'gallery', url: `${origin}/gallery`, disposition: 'exclude', reason: 'Image-only project gallery; no substantive text answer to export.' },
-    { id: 'reviews', url: `${origin}/reviews`, disposition: 'exclude', reason: 'Testimonial authenticity not yet confirmed by the business owner; do not republish until verified.' }
+    { id: 'gallery', url: `${origin}/gallery`, disposition: 'exclude', reason: 'Image-only project gallery; no substantive text answer to export.' }
   ]
 
   // ---- projection (identical format to manage_markdown_site.py render) ----

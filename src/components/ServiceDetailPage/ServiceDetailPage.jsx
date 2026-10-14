@@ -206,6 +206,7 @@ export default function ServiceDetailPage() {
                   <li>✓ Fully Licensed & Insured</li>
                   <li>✓ Transparent Upfront Pricing</li>
                   <li>✓ Skilled & Trusted Crew</li>
+                  <li>✓ We speak English, Hindi, Punjabi &amp; Urdu</li>
                 </ul>
               </div>
             </aside>

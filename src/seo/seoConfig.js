@@ -181,7 +181,7 @@ export function getSeo(pathname) {
   const path = (pathname || '/').replace(/\/+$/, '') || '/'
 
   let title = 'Landscaping & Construction Calgary | Josan Construction'
-  let description = 'Calgary landscaping & construction: custom decks, patios, fencing, sod, artificial grass, retaining walls & basements. Free quote: (587) 394-4029.'
+  let description = 'Calgary landscaping & construction: decks, patios, fencing, sod, turf, retaining walls & basements. We speak Hindi, Punjabi & Urdu. Free quotes.'
   let image = `${SITE_URL}/assets/sod.webp`
   const breadcrumbs = [{ name: 'Home', item: `${SITE_URL}/` }]
   let found = true

@@ -104,6 +104,7 @@ export default function Hero() {
         <p className="hero-subtitle reveal up d2">
           Expert Calgary landscaping, construction & outdoor design services. From decks and patios
           to full basement renovations — we build it all with care, skill, and pride.
+          We speak English, Hindi, Punjabi &amp; Urdu.
         </p>
 
         <div className="hero-actions reveal up d3">

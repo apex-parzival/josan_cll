@@ -24,8 +24,63 @@
       "permanent": true
     },
     {
+      "source": "/services/:n(\\d+)/:slug(artificial-grass-installation-turf|basement-renovation-home|basement-renovations|bobcat-service|deck-building-services|decking|fencing-services|flower-bed|framing-service|garage|gate-building|gazebo|kitchen-service|lot-gardening|new-basement-construction|painting-service|patios|pergola-services|professional-home-renovation|railing|retaining-walls|rock|sod|trees)",
+      "destination": "/services/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/services/:n(\\d+)/patios-construction",
+      "destination": "/services/patios",
+      "permanent": true
+    },
+    {
+      "source": "/services/:n(\\d+)/side-walk-construction",
+      "destination": "/services/patios",
+      "permanent": true
+    },
+    {
+      "source": "/services/:n(\\d+)/contact.php",
+      "destination": "/#contact",
+      "permanent": true
+    },
+    {
+      "source": "/services/:n(\\d+)",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/services/experienced-garage-builders-calgary",
+      "destination": "/services/garage",
+      "permanent": true
+    },
+    {
+      "source": "/services/professional-gazebo-calgary-services",
+      "destination": "/services/gazebo",
+      "permanent": true
+    },
+    {
+      "source": "/services/artificial-grass-installation-calgary",
+      "destination": "/services/artificial-grass-installation-turf",
+      "permanent": true
+    },
+    {
+      "source": "/services/fence-builders-calgary-you-can-rely-on",
+      "destination": "/services/fencing-services",
+      "permanent": true
+    },
+    {
       "source": "/services/basement-renovation",
       "destination": "/services/basement-renovations",
+      "permanent": true
+    },
+    {
+      "source": "/(team|mission|hiring|service)",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/category/gallery/:n*",
+      "destination": "/gallery",
       "permanent": true
     }
   ],
@@ -54,6 +109,15 @@
         {
           "key": "Link",
           "value": "<https://josancll.ca/>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/reviews.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/reviews>; rel=\"canonical\""
         }
       ]
     },

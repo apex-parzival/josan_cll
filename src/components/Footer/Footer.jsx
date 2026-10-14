@@ -126,6 +126,10 @@ export default function Footer() {
                   <span>🕐</span>
                   <span>Mon–Sat: 8AM–6PM</span>
                 </li>
+                <li>
+                  <span>🗣️</span>
+                  <span>We speak English, Hindi, Punjabi &amp; Urdu</span>
+                </li>
               </ul>
             </div>
 
