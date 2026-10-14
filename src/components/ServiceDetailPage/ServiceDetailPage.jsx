@@ -8,6 +8,7 @@ import serviceGalleryMap from '../../service_galleries_map.json'
 import { getServiceSeo } from '../../seo/seoConfig'
 import { getServiceCards } from '../../seo/serviceCards'
 import { CALGARY_FACTS, FACTS_DISCLAIMER, RELATED_SERVICES } from '../../seo/calgaryFacts'
+import { postsForService } from '../../blog/posts'
 
 const VIDEO_FILES = {
   'artificial-grass-installation-turf': 'artificial grass.mp4',
@@ -149,6 +150,20 @@ export default function ServiceDetailPage() {
                         <a href={`/services/${id}`} onClick={e => { e.preventDefault(); navigate(`/services/${id}`) }}>
                           {getServiceSeo(id).h1}
                         </a>
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
+              )}
+
+              {/* Helpful guides (blog posts about this service) */}
+              {postsForService(serviceId).length > 0 && (
+                <nav className="detail-paragraph related-services" aria-label="Helpful guides">
+                  <h2 className="card-question">Helpful Calgary guides</h2>
+                  <ul className="related-services-list">
+                    {postsForService(serviceId).map(p => (
+                      <li key={p.slug}>
+                        <a href={`/blog/${p.slug}`} onClick={e => { e.preventDefault(); navigate(`/blog/${p.slug}`) }}>{p.title}</a>
                       </li>
                     ))}
                   </ul>

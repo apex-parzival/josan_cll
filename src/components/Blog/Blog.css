@@ -1,0 +1,50 @@
+.blog-meta {
+  color: rgba(255,255,255,.85);
+  margin-top: 12px;
+  font-size: 1rem;
+  max-width: 760px;
+}
+.blog-container { max-width: 860px; }
+.blog-intro {
+  font-size: 1.15rem;
+  line-height: 1.75;
+  color: var(--gray-7);
+  margin: 8px 0 28px;
+}
+.blog-section .card-answer + .card-answer { margin-top: 12px; }
+.blog-section .calgary-facts-list { margin-top: 8px; }
+.blog-section a, .blog-card-more { color: var(--g600); }
+.blog-cta {
+  margin-top: 32px;
+  padding: 32px;
+  border-radius: var(--r-md, 16px);
+  background: var(--g800, #14532d);
+  color: #fff;
+  text-align: center;
+}
+.blog-cta h2 { color: #fff; margin: 0 0 8px; }
+.blog-cta p { color: rgba(255,255,255,.85); margin: 0 0 20px; }
+.blog-cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.blog-cta .btn-outline.dark { color: #fff; border-color: rgba(255,255,255,.6); }
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,.06);
+  border: 1px solid rgba(0,0,0,.06);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.blog-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,.1); }
+.blog-card img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.blog-card-body { padding: 20px 22px 24px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.blog-card-body h2 { font-size: 1.2rem; line-height: 1.35; color: var(--g800); margin: 0; }
+.blog-card-body p { color: var(--gray-7); font-size: .95rem; line-height: 1.6; margin: 0; flex: 1; }
+.blog-card-more { font-weight: 700; font-size: .9rem; }

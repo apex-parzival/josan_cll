@@ -13,11 +13,11 @@ const ssrDir = path.join(root, 'dist-ssr')
 
 const ssrEntry = fs.readdirSync(ssrDir).find(f => /^entry-server\.m?js$/.test(f))
 const ssr = await import(pathToFileURL(path.join(ssrDir, ssrEntry)).href)
-const { render, getSeo, SERVICE_IDS } = ssr
+const { render, getSeo, SERVICE_IDS, POSTS } = ssr
 
 const template = fs.readFileSync(path.join(distDir, 'index.html'), 'utf8')
 
-const routes = ['/', '/gallery', '/reviews', ...SERVICE_IDS.map(id => `/services/${id}`)]
+const routes = ['/', '/gallery', '/reviews', ...SERVICE_IDS.map(id => `/services/${id}`), '/blog', ...POSTS.map(p => `/blog/${p.slug}`)]
 
 const esc = s => String(s)
   .replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -69,7 +69,7 @@ console.log('  prerendered 404.html')
 
 // sitemap.xml with real, crawlable URLs (no #/ fragments)
 const today = new Date().toISOString().slice(0, 10)
-const priority = url => url === '/' ? '1.0' : url.startsWith('/services/') ? '0.8' : '0.6'
+const priority = url => url === '/' ? '1.0' : url.startsWith('/services/') ? '0.8' : url.startsWith('/blog/') ? '0.7' : '0.6'
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <!--

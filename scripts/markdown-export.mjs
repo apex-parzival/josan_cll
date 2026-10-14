@@ -43,7 +43,7 @@ function topicOf(id) {
 export function exportMarkdown({ root, distDir, data }) {
   const { SITE_URL, CONTENT_UPDATED, servicesData, getServiceSeo, getServiceCards,
     CALGARY_FACTS, FACTS_DISCLAIMER, FACTS_CHECKED, RELATED_SERVICES, SERVICE_IDS,
-    WRITTEN_REVIEWS, PROJECT_VIDEOS } = data
+    WRITTEN_REVIEWS, PROJECT_VIDEOS, POSTS } = data
   const origin = SITE_URL
 
   const missing = SERVICE_IDS.filter(id => topicOf(id) === 'company')
@@ -51,7 +51,7 @@ export function exportMarkdown({ root, distDir, data }) {
 
   // Source revision = hash of the content sources (same inputs as the HTML pages)
   const hash = crypto.createHash('sha256')
-  for (const rel of ['src/services_content_all.json', 'src/seo/seoConfig.js', 'src/seo/calgaryFacts.js', 'src/seo/reviews.js', 'src/seo/videos.js', 'scripts/markdown-export.mjs']) {
+  for (const rel of ['src/services_content_all.json', 'src/seo/seoConfig.js', 'src/seo/calgaryFacts.js', 'src/seo/reviews.js', 'src/seo/videos.js', 'src/blog/posts.js', 'scripts/markdown-export.mjs']) {
     hash.update(fs.readFileSync(path.join(root, rel)))
   }
   const revision = `content-${hash.digest('hex').slice(0, 12)}`
@@ -130,7 +130,25 @@ export function exportMarkdown({ root, distDir, data }) {
   ].join('\n')
   pages.push({ id: 'reviews', url: `${origin}/reviews`, title: 'Customer Reviews and Project Videos', purpose: 'Written reviews from Calgary homeowners and descriptions of project videos', topic: 'company', body: reviewsBody })
 
+  // Calgary homeowner guides (/blog/<slug>), same content as the HTML articles
+  for (const post of POSTS) {
+    const parts = [post.intro, '']
+    for (const sec of post.sections) {
+      parts.push(`## ${sec.heading}`, '')
+      for (const para of sec.paragraphs || []) parts.push(para, '')
+      if (sec.bullets) { for (const b of sec.bullets) parts.push(`- ${b}`); parts.push('') }
+      if (sec.after) parts.push(sec.after, '')
+    }
+    parts.push('## Sources', '')
+    for (const src of post.sources) parts.push(`- [${src.label}](${src.url})`)
+    parts.push('', `Sources checked ${post.checked}. City guidance has no legal status; confirm requirements with the City of Calgary for your property.`, '')
+    parts.push('## Related services', '', serviceList(post.related.filter(r => servicesData[r])), '', CONTACT)
+    pages.push({ id: post.slug, url: `${origin}/blog/${post.slug}`, title: post.h1.replace(/[|[\]<>]/g, ''),
+      purpose: post.description.replace(/[|[\]<>]/g, ''), topic: 'guides', body: parts.join('\n') })
+  }
+
   const excluded = [
+    { id: 'blog', url: `${origin}/blog`, disposition: 'exclude', reason: 'Guide index page only lists links to the guides, which are exported individually.' },
     { id: 'gallery', url: `${origin}/gallery`, disposition: 'exclude', reason: 'Image-only project gallery; no substantive text answer to export.' }
   ]
 

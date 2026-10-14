@@ -3,13 +3,14 @@
 // scripts/prerender.mjs (static HTML generated at build time for Google).
 import servicesData from '../services_content_all.json'
 import { PROJECT_VIDEOS, VIDEOS_UPLOAD_DATE } from './videos.js'
+import { POSTS, getPost } from '../blog/posts.js'
 
 export const SITE_URL = 'https://josancll.ca'
 export const BUSINESS_NAME = 'Josan Construction & Landscaping LTD'
 export const PHONE = '+1 (587) 394-4029'
 // Bump when page copy (services JSON, SEO text or Calgary facts) is reviewed/changed.
-export const CONTENT_UPDATED = '2026-10-14'
-export { servicesData }
+export const CONTENT_UPDATED = '2026-10-15'
+export { servicesData, POSTS }
 
 // Calgary-focused names, titles and descriptions for every service page.
 // `h1` is shown as the page heading; `title` is the <title> tag (~60 chars).
@@ -196,6 +197,21 @@ export function getSeo(pathname) {
     title = 'Reviews & Project Videos | Josan Construction Calgary'
     description = 'Watch project videos and read reviews from Calgary homeowners who chose Josan Construction & Landscaping for patios, turf, sod, decks and more.'
     breadcrumbs.push({ name: 'Client Reviews', item: `${SITE_URL}/reviews` })
+  } else if (path === '/blog') {
+    title = 'Calgary Landscaping & Construction Guides | Josan Construction'
+    description = 'Source-checked guides for Calgary homeowners: fence and deck permits, legal basement suites, new sod watering rules and artificial turf vs grass.'
+    breadcrumbs.push({ name: 'Guides', item: `${SITE_URL}/blog` })
+  } else if (path.startsWith('/blog/')) {
+    const post = getPost(path.split('/blog/')[1])
+    if (post) {
+      title = `${post.title} | Josan`
+      description = post.description
+      image = `${SITE_URL}${post.image}`
+      breadcrumbs.push({ name: 'Guides', item: `${SITE_URL}/blog` })
+      breadcrumbs.push({ name: post.title, item: `${SITE_URL}/blog/${post.slug}` })
+    } else {
+      found = false
+    }
   } else if (path.startsWith('/services/')) {
     const serviceId = path.split('/services/')[1]
     const seo = getServiceSeo(serviceId)
@@ -227,6 +243,23 @@ export function getSeo(pathname) {
       itemListElement: breadcrumbs.map((b, idx) => ({
         '@type': 'ListItem', position: idx + 1, name: b.name, item: b.item
       }))
+    })
+  }
+
+  if (found && path.startsWith('/blog/')) {
+    const post = getPost(path.split('/blog/')[1])
+    jsonLd.push({
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: post.h1,
+      description: post.description,
+      image: `${SITE_URL}${post.image}`,
+      datePublished: post.published,
+      dateModified: post.updated,
+      inLanguage: 'en-CA',
+      mainEntityOfPage: canonical,
+      author: { '@type': 'Organization', name: BUSINESS_NAME, url: `${SITE_URL}/` },
+      publisher: { '@id': `${SITE_URL}/#organization` }
     })
   }
 

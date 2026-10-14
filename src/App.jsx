@@ -18,6 +18,8 @@ import Chatbot from './components/Chatbot/Chatbot'
 import ServiceDetailPage from './components/ServiceDetailPage/ServiceDetailPage'
 import GalleryPage from './components/GalleryPage/GalleryPage'
 import ReviewsPage from './components/ReviewsPage/ReviewsPage'
+import BlogIndex from './components/Blog/BlogIndex'
+import BlogPost from './components/Blog/BlogPost'
 
 function ScrollRevealManager() {
   const location = useLocation()
@@ -85,6 +87,18 @@ export function AppShell() {
           <Route path="/reviews" element={
             <>
               <ReviewsPage />
+              <Contact />
+            </>
+          } />
+          <Route path="/blog" element={
+            <>
+              <BlogIndex />
+              <Contact />
+            </>
+          } />
+          <Route path="/blog/:slug" element={
+            <>
+              <BlogPost />
               <Contact />
             </>
           } />

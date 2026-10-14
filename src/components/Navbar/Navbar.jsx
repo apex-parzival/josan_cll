@@ -106,6 +106,12 @@ export default function Navbar() {
       closeMobile()
       return
     }
+    if (id === 'blog') {
+      navigate('/blog')
+      window.scrollTo({ top: 0, behavior: 'instant' })
+      closeMobile()
+      return
+    }
     if (id === 'reviews') {
       navigate('/reviews')
       window.scrollTo({ top: 0, behavior: 'instant' })
@@ -135,6 +141,7 @@ export default function Navbar() {
     { id: 'services', label: 'Services', hasDrop: true },
     { id: 'gallery',  label: 'Gallery', isPage: true },
     { id: 'reviews',  label: 'Reviews', isPage: true },
+    { id: 'blog',     label: 'Guides', isPage: true },
     { id: 'contact',  label: 'Contact Us' },
   ]
 

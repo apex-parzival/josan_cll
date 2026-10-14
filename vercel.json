@@ -336,6 +336,51 @@
           "value": "<https://josancll.ca/services/trees>; rel=\"canonical\""
         }
       ]
+    },
+    {
+      "source": "/llm/pages/wood-fence-calgary-height-rules-permits.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/blog/wood-fence-calgary-height-rules-permits>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/deck-permit-calgary.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/blog/deck-permit-calgary>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/legal-basement-suite-calgary-amnesty.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/blog/legal-basement-suite-calgary-amnesty>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/new-sod-calgary-watering-rules.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/blog/new-sod-calgary-watering-rules>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llm/pages/artificial-turf-vs-real-grass-calgary.md",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://josancll.ca/blog/artificial-turf-vs-real-grass-calgary>; rel=\"canonical\""
+        }
+      ]
     }
   ]
 }
